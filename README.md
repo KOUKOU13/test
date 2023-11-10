@@ -1,5 +1,7 @@
 # REST API and SPA Example Project
 
+Link for bwCloud application: http://8d0a4397-e8e9-4178-90ab-81a9fe4c1dfd.ma.bw-cloud-instance.org:8000/
+
 > This repository contains an example of a web application based on a RESTful API with Spring Boot (`api/`) and a single page application with Vue.js v3 (`frontend/`).
 > Please refer to the `README.md` files in the respective folders for concrete instructions.
 
