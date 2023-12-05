@@ -34,8 +34,8 @@ fetch(`${config.apiBaseUrl}/rides`)
   <div class="availableCarRides">
     <h3>{{ from_location }} to {{ to_location }}</h3>
     <li v-for="ride in rides">
-      <h2>{{ addresses.find((e)=>e.id==ride.startId).city }}->{{ ride.destId }}</h2>
-      <h4>Driver ID: {{ ride.driver }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
+      <h2>{{ addresses.find((e)=>e.id==ride.startId).city }}->{{ addresses.find((e)=>e.id==ride.destId).city }}</h2>
+      <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
     </li>
   </div>
 </template>
