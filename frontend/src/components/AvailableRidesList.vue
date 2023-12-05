@@ -21,7 +21,7 @@ const { from_location, to_location, date } = toRefs(props)
 
 const rides = ref([])
 
-fetch("http://localhost:5000/getAvailableRides?" + new URLSearchParams({
+fetch(`${config.apiBaseUrl}/getAvailableRides?` + new URLSearchParams({
           "from_location": from_location.value,
           "to_location": to_location.value,
           "date": date.value
