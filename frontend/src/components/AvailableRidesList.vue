@@ -28,6 +28,7 @@ const rides = ref([])
 
 function filterRides(ridesArray) {
   console.log("RUNNING FILTER")
+  console.log(from_location)
   var filteredRides = []
   for (let ride of ridesArray) {
     console.log("Printing ride")
