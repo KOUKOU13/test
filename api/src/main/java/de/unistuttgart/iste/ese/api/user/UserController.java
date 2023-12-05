@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.ese.api.users;
+package de.unistuttgart.iste.ese.api.user;
 
 import de.unistuttgart.iste.ese.api.ApiVersion1;
 import jakarta.annotation.PostConstruct;

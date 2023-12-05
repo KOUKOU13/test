@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.ese.api.users;
+package de.unistuttgart.iste.ese.api.user;
 
 import org.springframework.data.repository.CrudRepository;
 
