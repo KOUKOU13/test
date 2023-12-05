@@ -30,6 +30,8 @@ function filterRides(ridesArray) {
   console.log("RUNNING FILTER")
   var filteredRides = []
   for (let ride of ridesArray) {
+    console.log("Printing ride")
+    console.log(ride)
     if (ride.startId == from_location && ride.destId == to_location) {
       filteredRides.push(ride)
     }
