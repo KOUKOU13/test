@@ -1,7 +1,6 @@
 package de.unistuttgart.iste.ese.api.address;
 
 import de.unistuttgart.iste.ese.api.ApiVersion1;
-import de.unistuttgart.iste.ese.api.cats.Cat;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +28,15 @@ public class AddressController {
         }
     }
 
-    // get all Addresses
-    @GetMapping("/Addresses")
+    // get all addresses
+    @GetMapping("/addresses")
     public List<Address> getAddresses() {
         List<Address> allAddresses = (List<Address>) addressRepository.findAll();
         return allAddresses;
     }
 
     // get a single Address
-    @GetMapping("/Addresses/{id}")
+    @GetMapping("/addresses/{id}")
     public Address getAddress(@PathVariable("id") long id) {
 
         Address searchedAddress = addressRepository.findById(id);
@@ -49,7 +48,7 @@ public class AddressController {
     }
 
     // create a Address
-    @PostMapping("/Addresses")
+    @PostMapping("/addresses")
     @ResponseStatus(HttpStatus.CREATED)
     public Address createAddress(@Valid @RequestBody Address requestBody) {
         Address Address = new Address(requestBody.getCity(), requestBody.getPostcode(),
@@ -59,7 +58,7 @@ public class AddressController {
     }
 
     // update a Address
-    @PutMapping("/Addresses/{id}")
+    @PutMapping("/addresses/{id}")
     public Address updateAddress(@PathVariable("id") long id, @Valid @RequestBody Address requestBody) {
         requestBody.setId(id);
         Address AddressToUpdate = addressRepository.findById(id);
@@ -72,7 +71,7 @@ public class AddressController {
     }
 
     // delete a Address
-    @DeleteMapping("/Addresses/{id}")
+    @DeleteMapping("/addresses/{id}")
     public Address deleteAddress(@PathVariable("id") long id) {
 
         Address AddressToDelete = addressRepository.findById(id);

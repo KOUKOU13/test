@@ -22,8 +22,8 @@ public class UserController {
     public void init() {
 
         // check if DB is empty
-        long numberOfUsers = UserRepository.count();
-        if (numberOfUsers == 0) {
+        long numberOfusers = UserRepository.count();
+        if (numberOfusers == 0) {
             // adding sample data for demonstration purposes
             User octoUser = new User("OctoUser");
             UserRepository.save(octoUser);
@@ -33,15 +33,15 @@ public class UserController {
         }
     }
 
-    // get all Users
-    @GetMapping("/Users")
-    public List<User> getUsers() {
-        List<User> allUsers = (List<User>) UserRepository.findAll();
-        return allUsers;
+    // get all users
+    @GetMapping("/users")
+    public List<User> getusers() {
+        List<User> allusers = (List<User>) UserRepository.findAll();
+        return allusers;
     }
 
     // get a single User
-    @GetMapping("/Users/{id}")
+    @GetMapping("/users/{id}")
     public User getUser(@PathVariable("id") long id) {
 
         User searchedUser = UserRepository.findById(id);
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     // create a User
-    @PostMapping("/Users")
+    @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User requestBody) {
         User User = new User(requestBody.getName());
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     // update a User
-    @PutMapping("/Users/{id}")
+    @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User requestBody) {
         requestBody.setId(id);
         User UserToUpdate = UserRepository.findById(id);
@@ -75,7 +75,7 @@ public class UserController {
     }
 
     // delete a User
-    @DeleteMapping("/Users/{id}")
+    @DeleteMapping("/users/{id}")
     public User deleteUser(@PathVariable("id") long id) {
 
         User UserToDelete = UserRepository.findById(id);
