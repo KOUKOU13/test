@@ -11,11 +11,6 @@ function submit() {
 
 <template>
   <main>
-    <h1>Welcome to Your Vue.js App</h1>
-    <label class="mbs2 mbe2" >Type your name:</label>
-    <br/>
-    <input type="text" class="mbs2 mbe2" v-model="name"/>
-    <br/>
-    <Button class="mbs2 mbe2" @click="submit">Submit</Button>
+    <h1>Welcome to BlaBlaBlaCar</h1>
   </main>
 </template>
