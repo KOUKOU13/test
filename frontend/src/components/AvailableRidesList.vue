@@ -26,8 +26,18 @@ const { from_location, to_location, date } = toRefs(props)
 
 const rides = ref([])
 
+function filterRides(ridesArray) {
+  var filteredRides = []
+  for (ride of ridesArray) {
+    if (ride.startId == from_location && ride.destId == to_location) {
+      filteredRides.push(ride)
+    }
+  }
+  return filteredRides
+}
+
 fetch(`${config.apiBaseUrl}/rides`)
-      .then(res=>res.json()).then(data=>rides.value=data).then(data=>console.log(data)).catch(err=>console.log(err))
+      .then(res=>res.json()).then(data=>rides.value=filterRides(data)).then(data=>console.log(data)).catch(err=>console.log(err))
 </script>
 
 <template>
