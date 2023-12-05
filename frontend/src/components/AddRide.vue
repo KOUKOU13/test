@@ -13,6 +13,13 @@ fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>address
 
 
 function addRide() {
+  console.log(JSON.stringify({
+      startId: fromLocation.value,
+      destId: toLocation.value,
+      driverId: 0, // temporary
+      passangerLimit: 3 // also temporary, should add date later
+     }))
+     
   fetch(`${config.apiBaseUrl}/rides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
