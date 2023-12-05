@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 
-import { ref, toRefs } from 'vue'
+import { ref, toRefs } from 'vue';
+import config from "@/config";
 
 const props = defineProps({
   from_location: {
@@ -22,7 +23,7 @@ const { from_location, to_location, date } = toRefs(props)
 const rides = ref([])
 
 fetch(`${config.apiBaseUrl}/getAvailableRides?` + new URLSearchParams({
-          "from_location": from_location.value,
+          "from_location": from_location.value, // add id instead
           "to_location": to_location.value,
           "date": date.value
         }))
@@ -38,3 +39,5 @@ fetch(`${config.apiBaseUrl}/getAvailableRides?` + new URLSearchParams({
     </li>
   </div>
 </template>
+
+
