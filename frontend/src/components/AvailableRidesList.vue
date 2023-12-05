@@ -30,15 +30,15 @@ const rides = ref([])
 //       .then(res=>res.json()).then(data=>rides.value=data["rides"]).then(data=>console.log(data)).catch(err=>console.log(err))
 
 fetch(`${config.apiBaseUrl}/rides`)
-      .then(res=>res.json()).then(data=>rides.value=data["rides"]).then(data=>console.log(data)).catch(err=>console.log(err))
+      .then(res=>res.json()).then(data=>rides.value=data).then(data=>console.log(data)).catch(err=>console.log(err))
 </script>
 
 <template>
   <div class="availableCarRides">
     <h3>{{ from_location }} to {{ to_location }}</h3>
     <li v-for="ride in rides">
-      <h2>{{ ride.from }}->{{ ride.to }}</h2>
-      <h4>{{ ride.date }}</h4>
+      <h2>{{ ride }}->{{ ride }}</h2>
+      <h4>{{ ride }}</h4>
     </li>
   </div>
 </template>
