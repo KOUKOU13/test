@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.ese.api.address;
 
 import de.unistuttgart.iste.ese.api.ApiVersion1;
+import de.unistuttgart.iste.ese.api.cats.Cat;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,12 @@ public class AddressController {
     // executed after start-up and dependency injection
     @PostConstruct
     public void init() {
-
+        long numberOfAddresses = addressRepository.count();
+        if (numberOfAddresses == 0) {
+            addressRepository.save(new Address("stuttgart", "70174", "keplerstraße", 7));
+            addressRepository.save(new Address("stuttgart", "70569", "pfaffenwaldring", 0));
+            addressRepository.save(new Address("esslingen am neckar", "73728", "bahnhofsplatz", 1));
+        }
     }
 
     // get all Addresses

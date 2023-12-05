@@ -43,7 +43,7 @@ public class Address {
     // empty default constructor is necessary for JPA
     public Address() {}
 
-    public Address(String city, String postCode, String street, int houseNumber) {
+    public Address(String city, String postcode, String street, int houseNumber) {
         this.city = city;
         this.postcode = postcode;
         this.street = street;
