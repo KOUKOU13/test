@@ -19,7 +19,7 @@ function addRide() {
       driverId: 0, // temporary
       passangerLimit: 3 // also temporary, should add date later
      }))
-     
+
   fetch(`${config.apiBaseUrl}/rides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ function addRide() {
       startId: fromLocation.value,
       destId: toLocation.value,
       driverId: 0, // temporary
-      passangerLimit: 3 // also temporary, should add date later
+      passengerLimit: 3 // also temporary, should add date later
      })
   }).then(res=>console.log(res))
 }
