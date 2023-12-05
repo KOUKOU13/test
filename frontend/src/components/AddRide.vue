@@ -17,8 +17,8 @@ function addRide() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      fromLocation: fromLocation.value,
-      toLocation: toLocation.value,
+      startId: fromLocation.value,
+      destId: toLocation.value,
       driverId: 0, // temporary
       passangerLimit: 3 // also temporary, should add date later
      })
