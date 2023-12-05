@@ -25,11 +25,13 @@ function updateRides() {
   <div class="view_rides">
     <form @submit.prevent="updateRides">
     <select v-model="fromLocation" name="fromAddress">
+      <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
       {{ address.city }}
       </option>
     </select>
     <select v-model="toLocation" name="toAddress">
+    <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
       {{ address.city }}
       </option>

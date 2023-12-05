@@ -32,16 +32,15 @@ function addRide() {
 <template>
   <div class="add_ride">
     <form @submit.prevent="addRide">
-    <!-- <input v-model="fromLocation">
-    <input v-model="toLocation">
-    <input v-model="dateVal"> -->
     
     <select v-model="fromLocation" name="fromAddress">
+      <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
       {{ address.city }}
       </option>
     </select>
     <select v-model="toLocation" name="toAddress">
+      <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
       {{ address.city }}
       </option>
