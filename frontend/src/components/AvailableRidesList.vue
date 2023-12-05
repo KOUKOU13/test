@@ -18,16 +18,13 @@ const props = defineProps({
   }
 })
 
+const addresses = ref([])
+
+fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
+
 const { from_location, to_location, date } = toRefs(props)
 
 const rides = ref([])
-
-// fetch(`${config.apiBaseUrl}/getAvailableRides?` + new URLSearchParams({
-//           "from_location": from_location.value, // add id instead
-//           "to_location": to_location.value,
-//           "date": date.value
-//         }))
-//       .then(res=>res.json()).then(data=>rides.value=data["rides"]).then(data=>console.log(data)).catch(err=>console.log(err))
 
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json()).then(data=>rides.value=data).then(data=>console.log(data)).catch(err=>console.log(err))
@@ -37,10 +34,8 @@ fetch(`${config.apiBaseUrl}/rides`)
   <div class="availableCarRides">
     <h3>{{ from_location }} to {{ to_location }}</h3>
     <li v-for="ride in rides">
-      <h2>{{ ride }}->{{ ride }}</h2>
-      <h4>{{ ride }}</h4>
+      <h2>{{ addresses.find((e)=>e.id==ride.startId).city }}->{{ ride.destId }}</h2>
+      <h4>Driver ID: {{ ride.driver }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
     </li>
   </div>
 </template>
-
-
