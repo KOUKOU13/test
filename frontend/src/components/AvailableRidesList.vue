@@ -27,12 +27,14 @@ const { from_location, to_location, date } = toRefs(props)
 const rides = ref([])
 
 function filterRides(ridesArray) {
+  console.log("RUNNING FILTER")
   var filteredRides = []
   for (ride of ridesArray) {
     if (ride.startId == from_location && ride.destId == to_location) {
       filteredRides.push(ride)
     }
   }
+  console.log(filteredRides)
   return filteredRides
 }
 
