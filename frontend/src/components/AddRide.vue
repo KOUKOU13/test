@@ -13,7 +13,7 @@ fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>address
 
 
 function addRide() {
-  fetch(`${config.apiBaseUrl}/addRide`, {
+  fetch(`${config.apiBaseUrl}/rides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
