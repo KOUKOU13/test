@@ -4,6 +4,7 @@ import AboutView from "@/views/AboutView.vue";
 import CatsView from "@/views/CatsView.vue";
 import RiderView from "@/views/RiderView.vue";
 import DriverView from "@/views/DriverView.vue";
+import UserRegistrationView from "@/views/UserRegistrationView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/driver',
       name: 'driver',
       component: DriverView
+    },
+    {
+      path: '/registration',
+      name: 'registerUser',
+      component: UserRegistrationView
     }
   ]
 })
