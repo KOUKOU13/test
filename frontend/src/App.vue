@@ -2,7 +2,6 @@
 import {RouterView} from 'vue-router'
 import {Close, Header, HeaderNav, HeaderNavItem, Toast, Toasts} from "agnostic-vue";
 import {activeToasts} from "@/ts/toasts";
-
 import 'agnostic-vue/dist/common.min.css';
 import "agnostic-vue/dist/index.css";
 
@@ -46,21 +45,17 @@ function logoutFunc() {
           <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>
           </HeaderNavItem>
-<<<<<<< HEAD
           <HeaderNavItem>
+                <!-- Dark Mode Toggle Button -->
             <button @click="toggleDarkMode">Toggle Dark Mode</button>
           </HeaderNavItem>
-=======
           <!-- <HeaderNavItem>
             <h4>Login?</h4>
           </HeaderNavItem> -->
           <h4 v-if="loggedIn" style="position: absolute;right: 0;padding: 3em;">Welcome {{ userFirstName }}</h4>
->>>>>>> 6e6891445ced48a6f82f804f2518645e4c0f7c0e
         </HeaderNav>
-   
-
-      </template>
-    </Header>
+       </template>
+     </Header>
     <div class="main">
       <RouterView/>
     </div>
@@ -81,12 +76,15 @@ function logoutFunc() {
 export default {
   data() {
     return {
-      isDarkMode: false,
+      isDarkMode: localStorage.getItem('darkMode') === 'true' || false,
+
     };
   },
   methods: {
     toggleDarkMode() {
       this.isDarkMode = !this.isDarkMode;
+    console.log(this.isDarkMode);
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
     },
   },
 };
@@ -94,8 +92,11 @@ export default {
 
 <style scoped>
 /* App.vue styles */
+/* Import the style.css file from the assets folder */
+@import './assets/style.css';
 .dark-mode {
   --background-color: #333; /* dark mode background color */
   --text-color: #fff; /* dark mode text color */
 }
+
 </style>
