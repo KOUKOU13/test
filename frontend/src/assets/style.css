@@ -7,3 +7,14 @@
     background-image: url();
     color: white;
 }
+/* styles.css or styles.scss */
+:root {
+   --background-color: #fff; /* light mode background color */
+   --text-color: #333; /* light mode text color */
+ }
+ 
+ body {
+   background-color: var(--background-color);
+   color: var(--text-color);
+ }
+ 

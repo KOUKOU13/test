@@ -8,6 +8,7 @@ import "agnostic-vue/dist/index.css";
 </script>
 
 <template>
+<div :class="{ 'dark-mode': isDarkMode }">
   <div id="app">
     <Header isHeaderContentStart>
       <template v-slot:headernav>
@@ -30,19 +31,49 @@ import "agnostic-vue/dist/index.css";
           <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>
           </HeaderNavItem>
+          <HeaderNavItem>
+            <button @click="toggleDarkMode">Toggle Dark Mode</button>
+          </HeaderNavItem>
         </HeaderNav>
+   
+
       </template>
     </Header>
-
     <div class="main">
       <RouterView/>
     </div>
   </div>
-
+</div>
 </template>
+
+
 
 <style scoped>
 .main {
   padding: 10px 20px;
+}
+</style>
+
+<!-- App.vue -->
+<script lang="ts">
+export default {
+  data() {
+    return {
+      isDarkMode: false,
+    };
+  },
+  methods: {
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode;
+    },
+  },
+};
+</script>
+
+<style scoped>
+/* App.vue styles */
+.dark-mode {
+  --background-color: #333; /* dark mode background color */
+  --text-color: #fff; /* dark mode text color */
 }
 </style>
