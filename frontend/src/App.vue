@@ -18,7 +18,7 @@ function logoutFunc() {
 </script>
 
 <template>
-<div :class="{ 'dark-mode': isDarkMode }">
+<div :class="{ 'dark-mode': isDarkMode,'light-mode': !isDarkMode, }">
   <div id="app">
     <Header isHeaderContentStart>
       <template v-slot:headernav>
@@ -94,9 +94,37 @@ export default {
 /* App.vue styles */
 /* Import the style.css file from the assets folder */
 @import './assets/style.css';
+/* Set common styles for both dark and light modes */
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
 .dark-mode {
+  background-image: url('../images/background-image.jpg'); /* Set background image */
+  background-size: cover; /* Ensure the background image covers the entire container */
+  height: 100vh; /* Set the container height to the full viewport height */
+  display: flex;
+  flex-direction: column; /* Optional: Adjust if you have a specific layout */
   --background-color: #333; /* dark mode background color */
   --text-color: #fff; /* dark mode text color */
 }
+/* Set background image for light mode */
+.light-mode{
+  background-image: url('../images/background-image-light.jpg');
+  background-size: cover; /* Ensure the background image covers the entire container */
+  height: 100vh; /* Set the container height to the full viewport height */
+  display: flex;
+  flex-direction: column; /* Optional: Adjust if you have a specific layout */
+  --background-color: #333; /* dark mode background color */
+  --text-color: #fff; /* dark mode text color */
+}
+
+
+
 
 </style>
