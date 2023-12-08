@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Pattern;
 @Table(
     name = "addresses",
     uniqueConstraints = { @UniqueConstraint(name = "noDuplicateAddress",
-        columnNames = { "city", "postcode", "street", "houseNumber" } )
+        columnNames = { "city", "postcode", "district" } )
     })
 public class Address {
 
