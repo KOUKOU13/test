@@ -4,7 +4,6 @@ import jakarta.annotation.Nonnull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.lang.NonNullApi;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,7 +24,9 @@ public class Application {
                 // allow CORS requests for all resources and HTTP methods from the frontend origin
                 CorsRegistration registration = registry.addMapping("/**")
                     .allowedMethods("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE")
-                    .allowedOrigins("http://localhost:5173");
+                    .allowedOrigins("http://localhost:5173")
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
                 String frontendUrl = System.getenv("FRONTEND_URL");
                 if (frontendUrl != null) {
                     registration.allowedOrigins(frontendUrl);

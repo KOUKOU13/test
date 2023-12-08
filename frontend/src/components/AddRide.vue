@@ -5,55 +5,44 @@ import config from "@/config";
 
 const fromLocation = ref('')
 const toLocation = ref('')
-const dateVal = ref('')
-
-const addresses = ref([])
-
-fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
-
+const numberOfPassengers = ref(2)
+const dateVal = ref()
+const price = ref(0)
+const description = ref('')
+const animalsAllowed = ref(true)
+const smokingAllowed = ref(false)
 
 function addRide() {
-  console.log(JSON.stringify({
-      startId: fromLocation.value,
-      destId: toLocation.value,
-      driverId: 0, // temporary
-      passangerLimit: 3 // also temporary, should add date later
-     }))
-
   fetch(`${config.apiBaseUrl}/rides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       startId: fromLocation.value,
       destId: toLocation.value,
-      driverId: 0, // temporary
-      passengerLimit: 3 // also temporary, should add date later
+      driverId: 0,
+      passengerLimit: numberOfPassengers.value,
+      date: +new Date(dateVal.value) // gives unix timestamp of date and time
      })
   }).then(res=>console.log(res))
 }
-// Ride Ride = new Ride(requestBody.getStartId(), requestBody.getDestId(),
-//             requestBody.getDriverId(), requestBody.getPassengerLimit())
+
 </script>
 
 
 <template>
   <div class="add_ride">
     <form @submit.prevent="addRide">
-    
-    <select v-model="fromLocation" name="fromAddress">
-      <option disabled value="">Select a location</option>
-      <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}
-      </option>
-    </select>
-    <select v-model="toLocation" name="toAddress">
-      <option disabled value="">Select a location</option>
-      <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}
-      </option>
-    </select>
+
+    <input v-model="fromLocation" placeholder="Add departure location">
+    <input v-model="toLocation" placeholder="Add arrival location">
+    <label>Max number of passengers: <input v-model="numberOfPassengers" type="number"></label>
+    <input v-model="dateVal" type="datetime-local" placeholder="What date and time will you depart?">
+    <label>Price: <input v-model="price" type="number"></label>
+    <input v-model="description" type="textbox" placeholder="Add description">
+    <label><input type="checkbox" v-model="smokingAllowed">Smoking allowed?</label>
+    <label><input type="checkbox" v-model="animalsAllowed">Animals allowed?</label>
     <button>Add ride</button>
-    <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
+
   </form>
   </div>
 </template>

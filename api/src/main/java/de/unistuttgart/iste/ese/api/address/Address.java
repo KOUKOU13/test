@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
@@ -16,7 +15,7 @@ import jakarta.validation.constraints.Pattern;
 @Table(
     name = "addresses",
     uniqueConstraints = { @UniqueConstraint(name = "noDuplicateAddress",
-        columnNames = { "city", "postcode", "street", "houseNumber" } )
+        columnNames = { "city", "postcode", "district" } )
     })
 public class Address {
 
@@ -34,19 +33,15 @@ public class Address {
     private String postcode;
 
     @NotNull
-    private String street;
-
-    @Min(0)
-    private int houseNumber;
+    private String district;
 
     // empty default constructor is necessary for JPA
     public Address() {}
 
-    public Address(String city, String postcode, String street, int houseNumber) {
+    public Address(String city, String postcode, String district) {
         this.city = city;
         this.postcode = postcode;
-        this.street = street;
-        this.houseNumber = houseNumber;
+        this.district = district;
     }
 
     public long getId() {
@@ -73,19 +68,11 @@ public class Address {
         this.postcode = postcode;
     }
 
-    public String getStreet() {
-        return street;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public int getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(int houseNumber) {
-        this.houseNumber = houseNumber;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 }

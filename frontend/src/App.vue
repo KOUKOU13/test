@@ -5,6 +5,17 @@ import {activeToasts} from "@/ts/toasts";
 
 import 'agnostic-vue/dist/common.min.css';
 import "agnostic-vue/dist/index.css";
+
+let loggedIn = localStorage.getItem("userID") ? true : false
+console.log(loggedIn)
+let userFirstName = localStorage.getItem("userFirstName")
+
+function logoutFunc() {
+  localStorage.clear()
+  console.log("logging out")
+  location.reload()
+}
+
 </script>
 
 <template>
@@ -25,15 +36,26 @@ import "agnostic-vue/dist/index.css";
           <HeaderNavItem>
             <RouterLink to="/registration">Register</RouterLink>
           </HeaderNavItem>
-          <HeaderNavItem>
+          <HeaderNavItem v-if="!loggedIn">
             <RouterLink to="/login">Login</RouterLink>
+          </HeaderNavItem>
+          <HeaderNavItem v-if="loggedIn">
+            <!-- <RouterLink to="/login">Logout</RouterLink> -->
+            <h4 to="/" @click="logoutFunc">Logout</h4>
           </HeaderNavItem>
           <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>
           </HeaderNavItem>
+<<<<<<< HEAD
           <HeaderNavItem>
             <button @click="toggleDarkMode">Toggle Dark Mode</button>
           </HeaderNavItem>
+=======
+          <!-- <HeaderNavItem>
+            <h4>Login?</h4>
+          </HeaderNavItem> -->
+          <h4 v-if="loggedIn" style="position: absolute;right: 0;padding: 3em;">Welcome {{ userFirstName }}</h4>
+>>>>>>> 6e6891445ced48a6f82f804f2518645e4c0f7c0e
         </HeaderNav>
    
 

@@ -2,23 +2,49 @@
 import { ref } from 'vue'
 import config from '@/config'
 
-const username = ref('')
-const password = ref('')
-const isDriver = ref(false)
-const licensePlateNum = ref('')
+// const username = ref('')
+// const password = ref('')
+// const isDriver = ref(false)
+// const licensePlateNum = ref('')
+let loggedIn = localStorage.getItem("userID") ? true : false
+const email = ref('')
+
+// localStorage.setItem("user", "testing")
 
 function loginUser() {
-  let body = {
-    username: username.value,
-    password: password.value
-  }
+
+  fetch(`${config.apiBaseUrl}/users/login/${email.value}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+     })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if (!data.id) {
+      throw "Login failed"
+    }
+    localStorage.setItem("userID", data.id)
+    localStorage.setItem("userFirstName", data.firstName)
+    localStorage.setItem("userLastName", data.lastName)    
+    localStorage.setItem("userEmail", data.email)
+  })
+  .then(data=>console.log(data))
+  .then(data=>location.reload())
+  .catch(err=>console.log("neet"))
 }
 </script>
 <template>
-  <h1>Login</h1>
   <div class="login">
-    <input type="text" v-model="username" placeholder="Ente Username" />
-    <input type="text" v-model="password" placeholder="Enter Password" />
-    <button v-on:click="loginIn">Login</button>
+    <div class="not_logged_in" v-if="!loggedIn">
+      <h1>Login</h1>
+      <form @submit.prevent="loginUser">
+        <input v-model="email" type="text" placeholder="Enter email (apparently no password)" />
+        <button>Log in</button>
+      </form>
+    </div>
+    <div class="logged_in" v-if="loggedIn">
+      <h1>You are logged in</h1>
+    </div>
   </div>
 </template>

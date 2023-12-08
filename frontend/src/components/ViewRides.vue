@@ -27,13 +27,13 @@ function updateRides() {
     <select v-model="fromLocation" name="fromAddress">
       <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}
+      {{ address.city }}, {{ address.district }}
       </option>
     </select>
     <select v-model="toLocation" name="toAddress">
     <option disabled value="">Select a location</option>
       <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}
+      {{ address.city }}, {{ address.district }}
       </option>
     </select>
     <button>Update rides</button>
