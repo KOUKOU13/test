@@ -86,7 +86,7 @@ public class RideController {
         Ride Ride = new Ride(requestBody.getStartId(), requestBody.getDestId(),
             requestBody.getDriverId(), requestBody.getPassengerLimit(),
             requestBody.getStartTimestamp(), requestBody.isSmokingAllowed(),
-            requestBody.isPetTransportAllowed());
+            requestBody.isPetTransportAllowed(), requestBody.getDescription());
         Ride savedRide = rideRepository.save(Ride);
         return savedRide;
     }
