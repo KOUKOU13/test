@@ -69,12 +69,24 @@ public class RideController {
         return rides;
     }
 
+    @GetMapping("/rides/date/{date}")
+    public List<Ride> getRidesUntil(@PathVariable("date") long date) {
+        return ((List<Ride>) rideRepository.findAll()).stream()
+            .filter(r -> 
+                (r.getStartTimestamp() < date) &&
+                (r.getStartTimestamp() > System.currentTimeMillis() / 1000L)
+                )
+            .toList();
+    }
+
     // create a Ride
     @PostMapping("/rides")
     @ResponseStatus(HttpStatus.CREATED)
     public Ride createRide(@Valid @RequestBody Ride requestBody) {
         Ride Ride = new Ride(requestBody.getStartId(), requestBody.getDestId(),
-            requestBody.getDriverId(), requestBody.getPassengerLimit(), requestBody.getStartTimestamp());
+            requestBody.getDriverId(), requestBody.getPassengerLimit(),
+            requestBody.getStartTimestamp(), requestBody.isSmokingAllowed(),
+            requestBody.isPetTransportAllowed());
         Ride savedRide = rideRepository.save(Ride);
         return savedRide;
     }
