@@ -2,6 +2,7 @@
 
 import { ref } from 'vue';
 import config from "@/config";
+import { useRouter } from "vue-router"
 
 const firstName = ref('')
 const lastName = ref('')
@@ -10,6 +11,8 @@ const username = ref('')
 const password = ref('')
 const passwordConfirmation = ref('')
 const isDriver = ref(false)
+
+const router = useRouter()
 // const licensePlateNum = ref('')
 
 
@@ -23,7 +26,10 @@ function registerUser() {
       lastName: lastName.value,
       email: email.value, // temporary
      })
-  }).then(res=>console.log(res))
+  })
+  .then(res=>console.log(res))
+  .then(res=>router.push({ path: '/' }))
+
   
 }
 
