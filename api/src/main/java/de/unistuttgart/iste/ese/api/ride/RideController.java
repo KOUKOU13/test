@@ -74,7 +74,7 @@ public class RideController {
     @ResponseStatus(HttpStatus.CREATED)
     public Ride createRide(@Valid @RequestBody Ride requestBody) {
         Ride Ride = new Ride(requestBody.getStartId(), requestBody.getDestId(),
-            requestBody.getDriverId(), requestBody.getPassengerLimit());
+            requestBody.getDriverId(), requestBody.getPassengerLimit(), requestBody.getStartTimestamp());
         Ride savedRide = rideRepository.save(Ride);
         return savedRide;
     }

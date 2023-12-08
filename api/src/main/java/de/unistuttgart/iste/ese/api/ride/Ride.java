@@ -31,14 +31,17 @@ public class Ride {
     @Min(1)
     private int passengerLimit;
 
+    private long startTimestamp;
+
     // empty default constructor is necessary for JPA
     public Ride() {}
 
-    public Ride(long startId, long destId, long driverId, int passengerLimit) {
+    public Ride(long startId, long destId, long driverId, int passengerLimit, long startTimestamp) {
         this.startId = startId;
         this.destId = destId;
         this.driverId = driverId;
         this.passengerLimit = passengerLimit;
+        this.startTimestamp = startTimestamp;
     }
 
     public long getId() {
@@ -79,5 +82,13 @@ public class Ride {
 
     public void setPassengerLimit(int passengerLimit) {
         this.passengerLimit = passengerLimit;
+    }
+
+    public long getStartTimestamp() {
+        return startTimestamp;
+    }
+
+    public void setStartTimestamp(long startTimestamp) {
+        this.startTimestamp = startTimestamp;
     }
 }
