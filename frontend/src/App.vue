@@ -25,6 +25,9 @@ import "agnostic-vue/dist/index.css";
             <RouterLink to="/registration">Register</RouterLink>
           </HeaderNavItem>
           <HeaderNavItem>
+            <RouterLink to="/login">Login</RouterLink>
+          </HeaderNavItem>
+          <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>
           </HeaderNavItem>
         </HeaderNav>

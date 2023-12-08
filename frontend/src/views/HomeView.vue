@@ -7,10 +7,18 @@ let name = "";
 function submit() {
   showToast(new Toast("Welcome!", `Hello ${name}! Nice to meet you!`));
 }
-</script>
 
+</script>
 <template>
-  <main>
-    <h1>Welcome to BlaBlaBlaCar</h1>
-  </main>
-</template>
+  <h1>Welcome to e-mundo's ride & share </h1>
+  <h2> test </h2>
+  <link rel="stylesheet" href="assets/style.css">
+
+
+ </template>
+
+
+
+
+
+
