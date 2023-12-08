@@ -1,6 +1,8 @@
 package de.unistuttgart.iste.ese.api.ride;
 
 import de.unistuttgart.iste.ese.api.ApiVersion1;
+import de.unistuttgart.iste.ese.api.address.Address;
+import de.unistuttgart.iste.ese.api.address.AddressRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @ApiVersion1
@@ -16,6 +19,9 @@ public class RideController {
 
     @Autowired
     private RideRepository rideRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     // executed after start-up and dependency injection
     @PostConstruct
@@ -25,7 +31,7 @@ public class RideController {
 
     // get all rides
     @GetMapping("/rides")
-    public List<Ride> getrides() {
+    public List<Ride> getRides() {
         List<Ride> allrides = (List<Ride>) rideRepository.findAll();
         return allrides;
     }
@@ -40,6 +46,27 @@ public class RideController {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Ride with ID %s not found!", id));
+    }
+
+    @GetMapping("rides/{start}/{dst}")
+    public List<Ride> getRidesFromTo(@PathVariable("start") String start, @PathVariable("dst") String dst) {
+        List<Address> allAddresses = (List<Address>) addressRepository.findAll();
+        List<Long> startAddresses = allAddresses
+            .stream()
+            .filter(a -> a.getCity().equals(start))
+            .map(a -> a.getId())
+            .collect(Collectors.toList());
+        List<Long> dstAddresses = allAddresses
+            .stream()
+            .filter(a -> a.getCity().equals(dst))
+            .map(a -> a.getId())
+            .collect(Collectors.toList());
+        List<Ride> allRides = (List<Ride>) rideRepository.findAll();
+        List<Ride> rides = allRides
+            .stream()
+            .filter(r -> startAddresses.contains(r.getStartId()) && dstAddresses.contains(r.getDestId()))
+            .collect(Collectors.toList());
+        return rides;
     }
 
     // create a Ride

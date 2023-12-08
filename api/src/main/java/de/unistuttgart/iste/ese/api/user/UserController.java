@@ -15,7 +15,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository UserRepository;
+    private UserRepository userRepository;
 
     // executed after start-up and dependency injection
     @PostConstruct
@@ -25,7 +25,7 @@ public class UserController {
     // get all users
     @GetMapping("/users")
     public List<User> getusers() {
-        List<User> allusers = (List<User>) UserRepository.findAll();
+        List<User> allusers = (List<User>) userRepository.findAll();
         return allusers;
     }
 
@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable("id") long id) {
 
-        User searchedUser = UserRepository.findById(id);
+        User searchedUser = userRepository.findById(id);
         if (searchedUser != null) {
             return searchedUser;
         }
@@ -41,12 +41,22 @@ public class UserController {
                 String.format("User with ID %s not found!", id));
     }
 
+    @PostMapping("/users/login/{email}")
+    public User loginUser(@PathVariable("email") String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user;
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            String.format("User with email %s does not exist!", email));
+    }
+
     // create a User
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User requestBody) {
         User User = new User(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getEmail());
-        User savedUser = UserRepository.save(User);
+        User savedUser = userRepository.save(User);
         return savedUser;
     }
 
@@ -54,9 +64,9 @@ public class UserController {
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User requestBody) {
         requestBody.setId(id);
-        User UserToUpdate = UserRepository.findById(id);
+        User UserToUpdate = userRepository.findById(id);
         if (UserToUpdate != null) {
-            User savedUser = UserRepository.save(requestBody);
+            User savedUser = userRepository.save(requestBody);
             return savedUser;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -67,9 +77,9 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public User deleteUser(@PathVariable("id") long id) {
 
-        User UserToDelete = UserRepository.findById(id);
+        User UserToDelete = userRepository.findById(id);
         if (UserToDelete != null) {
-            UserRepository.deleteById(id);
+            userRepository.deleteById(id);
             return UserToDelete;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
