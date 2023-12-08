@@ -5,16 +5,12 @@ import config from "@/config";
 
 const fromLocation = ref('')
 const toLocation = ref('')
-const numberOfPassengers = ref(0)
+const numberOfPassengers = ref(2)
 const dateVal = ref()
-
-const addresses = ref([])
-
-fetch(`${config.apiBaseUrl}/addresses`)
-.then(res=>res.json())
-.then(data=>addresses.value=data)
-.then(data=>console.log(addresses.value))
-.catch(err=>console.log(err))
+const price = ref(0)
+const description = ref('')
+const animalsAllowed = ref(true)
+const smokingAllowed = ref(false)
 
 function addRide() {
   fetch(`${config.apiBaseUrl}/rides`, {
@@ -37,10 +33,14 @@ function addRide() {
   <div class="add_ride">
     <form @submit.prevent="addRide">
 
-    <input v-model="fromLocation" placeholder="Add departure location" />
-    <input v-model="toLocation" placeholder="Add arrival location" />
-    <input v-model="numberOfPassengers" type="number" placeholder="Add max number of passengers" />
-    <input v-model="dateVal" type="datetime-local" placeholder="What date and time will you depart?" />
+    <input v-model="fromLocation" placeholder="Add departure location">
+    <input v-model="toLocation" placeholder="Add arrival location">
+    <label>Max number of passengers: <input v-model="numberOfPassengers" type="number"></label>
+    <input v-model="dateVal" type="datetime-local" placeholder="What date and time will you depart?">
+    <label>Price: <input v-model="price" type="number"></label>
+    <input v-model="description" type="textbox" placeholder="Add description">
+    <label><input type="checkbox" v-model="smokingAllowed">Smoking allowed?</label>
+    <label><input type="checkbox" v-model="animalsAllowed">Animals allowed?</label>
     <button>Add ride</button>
 
   </form>
