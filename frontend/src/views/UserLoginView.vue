@@ -21,6 +21,9 @@ function loginUser() {
   })
   .then(res=>res.json())
   .then(data=>{
+    if (!data.id) {
+      throw "Login failed"
+    }
     localStorage.setItem("userID", data.id)
     localStorage.setItem("userFirstName", data.firstName)
     localStorage.setItem("userLastName", data.lastName)    
