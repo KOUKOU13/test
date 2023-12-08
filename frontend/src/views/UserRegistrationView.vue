@@ -10,55 +10,20 @@ const username = ref('')
 const password = ref('')
 const passwordConfirmation = ref('')
 const isDriver = ref(false)
-const licensePlateNum = ref('')
+// const licensePlateNum = ref('')
 
 
 function registerUser() {
 
-  let body = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    email: email.value,
-    username: username.value,
-    password: password.value,
-  }
-  if (isDriver) {
-    body.licensePlateNum = licensePlateNum.value
-    fetch(`${config.apiBaseUrl}/addDriver`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }).then(res=>console.log(res))
-  }
-  else {
-    fetch(`${config.apiBaseUrl}/addRider`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }).then(res=>console.log(res))
-  }
-
-  // if (isDriver) {
-  //   fetch(`${config.apiBaseUrl}/addDriver`, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       username: username.value,
-  //       password: password.value,
-  //       licensePlateNum: licensePlateNum.value
-  //     })
-  //   }).then(res=>console.log(res))
-  // }
-  // else {
-  //   fetch(`${config.apiBaseUrl}/addRider`, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({
-  //       username: username.value,
-  //       password: password.value,
-  //     })
-  //   }).then(res=>console.log(res))
-  // }
+    fetch(`${config.apiBaseUrl}/users`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value, // temporary
+     })
+  }).then(res=>console.log(res))
   
 }
 
@@ -77,7 +42,7 @@ function registerUser() {
     <br>
     <label><input type="checkbox" v-model="isDriver">Register as driver?</label>
     <br>
-    <input v-if="isDriver" v-model="licensePlateNum" placeholder="License plate number">
+    <!-- <input v-if="isDriver" v-model="licensePlateNum" placeholder="License plate number"> -->
     <br>
     <!-- <button :disabled="password != confirmPassword">Register</button> -->
     <button>Register</button>
