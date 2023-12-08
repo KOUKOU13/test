@@ -26,9 +26,11 @@ public class AddressController {
     public void init() {
         long numberOfAddresses = addressRepository.count();
         if (numberOfAddresses == 0) {
-            addressRepository.save(new Address("stuttgart", "70174", "keplerstraße", 7));
-            addressRepository.save(new Address("stuttgart", "70569", "pfaffenwaldring", 0));
-            addressRepository.save(new Address("esslingen am neckar", "73728", "bahnhofsplatz", 1));
+            addressRepository.save(new Address("Stuttgart", "70174", "Universität Stadtmitte"));
+            addressRepository.save(new Address("Stuttgart", "70569", "Universität"));
+            addressRepository.save(new Address("Stuttgart", "70629", "Flughafen"));
+            addressRepository.save(new Address("Esslingen am Neckar", "73728", "Bahnhof"));
+            addressRepository.save(new Address("Ludwigsburg", "71638", "Bahnhof"));
         }
     }
 
@@ -56,7 +58,7 @@ public class AddressController {
     @ResponseStatus(HttpStatus.CREATED)
     public Address createAddress(@Valid @RequestBody Address requestBody) {
         Address Address = new Address(requestBody.getCity(), requestBody.getPostcode(),
-            requestBody.getStreet(), requestBody.getHouseNumber());
+            requestBody.getDistrict());
         Address savedAddress = addressRepository.save(Address);
         return savedAddress;
     }
