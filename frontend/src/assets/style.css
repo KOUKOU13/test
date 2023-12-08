@@ -20,6 +20,9 @@
  /* App.vue styles */
 .dark-mode {
    background-color: #333; /* Dark mode background color */
-   color: #801111; /* Dark mode text color */
+   color: #c96161; /* Dark mode text color */
  }
- 
+ .light-mode {
+   background-color: #333; /* Dark mode background color */
+   color: #7696ed; /* Dark mode text color */
+ }

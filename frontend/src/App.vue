@@ -104,12 +104,14 @@ body {
   display: flex;
   flex-direction: column;
 }
+/* Set background image for light mode */
+
 .dark-mode {
   background-image: url('../images/background-image.jpg'); /* Set background image */
   background-size: cover; /* Ensure the background image covers the entire container */
   height: 100vh; /* Set the container height to the full viewport height */
   display: flex;
-  flex-direction: column; /* Optional: Adjust if you have a specific layout */
+  flex-direction: column; 
   --background-color: #333; /* dark mode background color */
   --text-color: #fff; /* dark mode text color */
 }
@@ -119,12 +121,14 @@ body {
   background-size: cover; /* Ensure the background image covers the entire container */
   height: 100vh; /* Set the container height to the full viewport height */
   display: flex;
-  flex-direction: column; /* Optional: Adjust if you have a specific layout */
+  flex-direction: column; 
   --background-color: #333; /* dark mode background color */
   --text-color: #fff; /* dark mode text color */
 }
-
-
-
-
+/* Styles for the title */
+.title {
+  font-family: 'My Font', sans-serif; 
+  font-size: 24px; /* Adjust the font size as needed */
+  font-weight: bold; /* Adjust the font weight */
+}
 </style>
