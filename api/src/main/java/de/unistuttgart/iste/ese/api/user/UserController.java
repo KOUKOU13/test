@@ -20,17 +20,6 @@ public class UserController {
     // executed after start-up and dependency injection
     @PostConstruct
     public void init() {
-
-        // check if DB is empty
-        long numberOfusers = UserRepository.count();
-        if (numberOfusers == 0) {
-            // adding sample data for demonstration purposes
-            User octoUser = new User("OctoUser");
-            UserRepository.save(octoUser);
-
-            User grumpyUser = new User("Grumpy User");
-            UserRepository.save(grumpyUser);
-        }
     }
 
     // get all users
@@ -56,7 +45,7 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User requestBody) {
-        User User = new User(requestBody.getName());
+        User User = new User(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getEmail());
         User savedUser = UserRepository.save(User);
         return savedUser;
     }
