@@ -55,7 +55,9 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User requestBody) {
-        User User = new User(requestBody.getFirstName(), requestBody.getLastName(), requestBody.getEmail());
+        User User = new User(requestBody.getFirstName(), requestBody.getLastName(),
+            requestBody.getEmail(), requestBody.getDescription(),
+            requestBody.getCarDescription());
         User savedUser = userRepository.save(User);
         return savedUser;
     }

@@ -35,13 +35,21 @@ public class User {
     @Unique
     private String email;
 
+    @NotNull
+    private String description;
+
+    @NotNull
+    private String carDescription;
+
     // empty default constructor is necessary for JPA
     public User() {}
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email, String description, String carDescription) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.description = description;
+        this.carDescription = carDescription;
     }
 
     public long getId() {
@@ -74,5 +82,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCarDescription() {
+        return carDescription;
+    }
+
+    public void setCarDescription(String carDescription) {
+        this.carDescription = carDescription;
     }
 }
