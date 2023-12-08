@@ -17,6 +17,10 @@ public class AddressController {
     @Autowired
     private AddressRepository addressRepository;
 
+    /*public AddressRepository getAddressRepository() {
+        return addressRepository;
+    }*/
+
     // executed after start-up and dependency injection
     @PostConstruct
     public void init() {
