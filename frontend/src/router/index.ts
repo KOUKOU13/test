@@ -6,6 +6,7 @@ import RiderView from "@/views/RiderView.vue";
 import DriverView from "@/views/DriverView.vue";
 import UserRegistrationView from "@/views/UserRegistrationView.vue";
 import UserLoginView from "@/views/UserLoginView.vue";
+import EditProfileView from "@/views/EditProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +40,12 @@ const router = createRouter({
       path: '/login',
       name: 'loginUser',
       component: UserLoginView
-    }
+    },
+    {
+      path: '/profile',
+      name: 'profilePage',
+      component: EditProfileView
+    },
   ]
 })
 

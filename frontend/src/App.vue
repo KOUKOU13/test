@@ -49,10 +49,9 @@ function logoutFunc() {
                 <!-- Dark Mode Toggle Button -->
             <button @click="toggleDarkMode">Toggle Dark Mode</button>
           </HeaderNavItem>
-          <!-- <HeaderNavItem>
-            <h4>Login?</h4>
-          </HeaderNavItem> -->
-          <h4 v-if="loggedIn" style="position: absolute;right: 0;padding: 3em;">Welcome {{ userFirstName }}</h4>
+          <HeaderNavItem>
+            <RouterLink to="/profile" v-if="loggedIn" style="position: absolute;right: 0; padding-right: 3em;">Welcome {{ userFirstName }}. Click to edit profile.</RouterLink>
+          </HeaderNavItem>
         </HeaderNav>
        </template>
      </Header>
