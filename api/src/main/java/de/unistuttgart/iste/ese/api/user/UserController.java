@@ -61,12 +61,25 @@ public class UserController {
         return savedUser;
     }
 
+    // // update a User
+    // @PutMapping("/users/{id}")
+    // public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User requestBody) {
+    //     requestBody.setId(id);
+    //     User userToUpdate = userRepository.findById(id);
+    //     if (userToUpdate != null) {
+    //         return userRepository.save(requestBody);
+    //     }
+    //     throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+    //             String.format("User with ID %s not found!", id));
+    // }
+
     // update a User
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User requestBody) {
         requestBody.setId(id);
         User userToUpdate = userRepository.findById(id);
         if (userToUpdate != null) {
+            requestBody.setPassword(userToUpdate.getPassword());
             return userRepository.save(requestBody);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
