@@ -3,6 +3,8 @@
 import { ref, toRefs } from 'vue'
 import config from "@/config";
 
+const userId = localStorage.getItem("userID")
+
 const props = defineProps({
   filterOn: {
     type: Boolean,
@@ -48,6 +50,18 @@ function filterRides(ridesArray) {
   }
 }
 
+function registerUserForRide(rideId) {
+  console.log(`register for ${rideId}`)
+  fetch(`${config.apiBaseUrl}/rides`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId: userId,
+      rideId: rideId,
+     })
+    }).then(res=>console.log(res))
+}
+
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json()).then(data=>rides.value=filterRides(data)).then(data=>console.log(data)).catch(err=>console.log(err))
 
@@ -74,6 +88,7 @@ this.description = description; -->
       <h5>Driver: {{ ride.driverId }}, Passengers: 0/{{ ride.passengerLimit }}</h5>
       <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
       <h5>Description {{ ride.description }}</h5>
+      <button @click="()=>registerUserForRide(ride.id)">Register for this ride</button>
     </li>
   </div>
 </template>
