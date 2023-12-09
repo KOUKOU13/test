@@ -7,6 +7,7 @@ import DriverView from "@/views/DriverView.vue";
 import UserRegistrationView from "@/views/UserRegistrationView.vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import EditProfileView from "@/views/EditProfileView.vue";
+import InviteFriendView from "@/views/InviteFriendView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/profile',
       name: 'profilePage',
       component: EditProfileView
+    },
+    {
+      path: '/invite',
+      name: 'invitePage',
+      component: InviteFriendView
     },
   ]
 })
