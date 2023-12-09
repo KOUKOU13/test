@@ -22,6 +22,8 @@ public class UserRide {
     @NotNull
     private long rideId;
 
+    public UserRide() {}
+
     public UserRide(@NotNull long userId, @NotNull long rideId) {
         this.userId = userId;
         this.rideId = rideId;
