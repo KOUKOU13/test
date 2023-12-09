@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import config from "@/config";
 import { useRouter } from "vue-router"
 import {showToast, Toast} from "@/ts/toasts";
@@ -14,11 +14,12 @@ const passwordConfirmation = ref('')
 const isDriver = ref(false)
 
 const router = useRouter()
+const passwordsMatch = computed(() => password.value == passwordConfirmation.value)
 // const licensePlateNum = ref('')
 
 
 function registerUser() {
-  if (password.value != passwordConfirmation.value) {
+  if (!passwordsMatch.value) {
     showToast(new Toast("Registration failed", "Ensure all fields are filled in correctly"))
     return false
   }
@@ -55,7 +56,7 @@ function registerUser() {
     <input v-model="username" placeholder="Enter username">
     <input v-model="password" placeholder="Enter password" type="password">
     <input v-if="password.length > 0" v-model="passwordConfirmation" placeholder="Confirm password" type="password">
-
+    <h5 v-if="!passwordsMatch" style="color:red;">Passwords don't match</h5>
     <br>
     <label><input type="checkbox" v-model="isDriver">Register as driver?</label>
     <br>
