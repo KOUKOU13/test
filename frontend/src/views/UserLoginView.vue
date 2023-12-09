@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import config from '@/config'
+import {showToast, Toast} from "@/ts/toasts";
 
 // const username = ref('')
 // const password = ref('')
@@ -31,7 +32,8 @@ function loginUser() {
   })
   .then(data=>console.log(data))
   .then(data=>location.reload())
-  .catch(err=>console.log("neet"))
+  .catch(err=>showToast(new Toast("Login failed", "Please change username or password"))
+)
 }
 </script>
 <template>
