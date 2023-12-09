@@ -52,7 +52,7 @@ function filterRides(ridesArray) {
 
 function registerUserForRide(rideId) {
   console.log(`register for ${rideId}`)
-  fetch(`${config.apiBaseUrl}/rides`, {
+  fetch(`${config.apiBaseUrl}/userrides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -60,6 +60,13 @@ function registerUserForRide(rideId) {
       rideId: rideId,
      })
     }).then(res=>console.log(res))
+}
+
+async function getUserCountForRide(rideId) {
+  const response = await fetch(`${config.apiBaseUrl}/userrides/ride/${rideId}`)
+  const json = await response.json()
+  console.log("fooooo " + Object.keys(json).length)
+  return Object.keys(json).length;
 }
 
 fetch(`${config.apiBaseUrl}/rides`)
@@ -79,16 +86,15 @@ this.description = description; -->
 
 <template>
   <div>
-
     <h3>Viewing rides (filter: {{ filterOn }})</h3>
     <h5>From: {{ from_location }}</h5>
     <li v-for="ride in rides">
       <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
       <h4>{{ ride.startId }}->{{ ride.destId }}</h4>
-      <h5>Driver: {{ ride.driverId }}, Passengers: 0/{{ ride.passengerLimit }}</h5>
-      <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
+      <h5>Driver: {{ ride.driverId }}, Passengers: {{ getUserCountForRide(ride.id).then( value => { return value } ) }}/{{ ride.passengerLimit }}</h5>
+      <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symbol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
       <h5>Description {{ ride.description }}</h5>
-      <button @click="()=>registerUserForRide(ride.id)">Register for this ride</button>
+      <button @click="()=>registerUserForRide(ride.id)" :disabled="userId === 0">Register for this ride</button>
     </li>
   </div>
 </template>
