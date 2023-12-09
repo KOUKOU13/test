@@ -25,8 +25,7 @@ public class UserController {
     // get all users
     @GetMapping("/users")
     public List<User> getusers() {
-        List<User> allusers = (List<User>) userRepository.findAll();
-        return allusers;
+        return (List<User>) userRepository.findAll();
     }
 
     // get a single User
@@ -55,10 +54,10 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody User requestBody) {
-        User User = new User(requestBody.getFirstName(), requestBody.getLastName(),
+        User user = new User(requestBody.getFirstName(), requestBody.getLastName(),
             requestBody.getEmail(), requestBody.getDescription(),
             requestBody.getCarDescription());
-        User savedUser = userRepository.save(User);
+        User savedUser = userRepository.save(user);
         return savedUser;
     }
 
@@ -66,10 +65,9 @@ public class UserController {
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable("id") long id, @Valid @RequestBody User requestBody) {
         requestBody.setId(id);
-        User UserToUpdate = userRepository.findById(id);
-        if (UserToUpdate != null) {
-            User savedUser = userRepository.save(requestBody);
-            return savedUser;
+        User userToUpdate = userRepository.findById(id);
+        if (userToUpdate != null) {
+            return userRepository.save(requestBody);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("User with ID %s not found!", id));
@@ -78,11 +76,10 @@ public class UserController {
     // delete a User
     @DeleteMapping("/users/{id}")
     public User deleteUser(@PathVariable("id") long id) {
-
-        User UserToDelete = userRepository.findById(id);
-        if (UserToDelete != null) {
+        User userToDelete = userRepository.findById(id);
+        if (userToDelete != null) {
             userRepository.deleteById(id);
-            return UserToDelete;
+            return userToDelete;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("User with ID %s not found!", id));
