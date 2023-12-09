@@ -3,6 +3,7 @@
 import { ref } from 'vue';
 import config from "@/config";
 import { useRouter } from "vue-router"
+import {showToast, Toast} from "@/ts/toasts";
 
 const firstName = ref('')
 const lastName = ref('')
@@ -25,12 +26,16 @@ function registerUser() {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value, // temporary
+      description: "default description",
+      carDescription: "default car description",
      })
   })
-  .then(res=>console.log(res))
+  .then(res=>{
+      if (res.status != 201) {throw "Registration failed"}
+    })
   .then(res=>router.push({ path: '/' }))
+  .catch(err=>showToast(new Toast("Registration failed", "Ensure all fields are filled in correctly")))
 
-  
 }
 
 </script>
