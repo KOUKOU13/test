@@ -21,7 +21,8 @@ function addRide() {
       destId: toLocation.value,
       driverId: 0,
       passengerLimit: numberOfPassengers.value,
-      date: +new Date(dateVal.value) // gives unix timestamp of date and time
+      date: +new Date(dateVal.value), // gives unix timestamp of date and time
+      description: description.value
      })
   }).then(res=>console.log(res))
 }

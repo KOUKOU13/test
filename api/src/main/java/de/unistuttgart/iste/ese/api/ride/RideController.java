@@ -79,6 +79,15 @@ public class RideController {
             .toList();
     }
 
+    @GetMapping("/rides/driver/{driverId}")
+    public List<Ride> getRidesByDriverId(@PathVariable("driverId") long driverId) {
+        return ((List<Ride>) rideRepository.findAll()).stream()
+            .filter(r -> 
+                (r.getDriverId() == driverId)
+                )
+            .toList();
+    }
+
     // create a Ride
     @PostMapping("/rides")
     @ResponseStatus(HttpStatus.CREATED)
