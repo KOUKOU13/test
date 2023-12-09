@@ -40,6 +40,15 @@ function submit() {
       <router-link to="/Login">
         <button>Login</button>
       </router-link>
+    
+    </div>
+    <div>
+      <h2>Curious about e.mundo's ride & share ?</h2>
+      <h3>Read Our Story</h3>
+      <!-- Buttons to navigate to driver and rider pages -->
+      <router-link to="/about">
+        <button>About Us</button>
+      </router-link>
     </div>
     
 
