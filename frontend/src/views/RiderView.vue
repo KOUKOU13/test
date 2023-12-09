@@ -1,8 +1,24 @@
 <script setup lang="ts">
 import {Button} from "agnostic-vue";
 import ViewRides from "../components/ViewRides.vue";
+import { ref } from 'vue';
+import config from "@/config";
 
 let name = "";
+
+const filterOnVal = ref(false)
+
+const fromLocation = ref('')
+const toLocation = ref('')
+const dateVal = ref('')
+const keyUpdate = ref(0)
+
+
+const addresses = ref([])
+
+fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
+
+
 
 function submit() {
 //   showToast(new Toast("!", `Hello ${name}! Nice to meet you!`));
@@ -12,11 +28,25 @@ function submit() {
 <template>
   <main>
     <h1>Rider View</h1>
-    <ViewRides />
-    <!-- <label class="mbs2 mbe2" >Type your name:</label>
-    <br/>
-    <input type="text" class="mbs2 mbe2" v-model="name"/>
-    <br/>
-    <Button class="mbs2 mbe2" @click="submit">Submit</Button> -->
+    <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
+      <div id="showingFilters" v-if="filterOnVal">
+    <form @submit.prevent="updateRides"> 
+        <select v-model="fromLocation" name="fromAddress">
+          <option disabled value="">Select a location</option>
+          <option v-for="address in addresses" :value="address.id">
+          {{ address.city }}, {{ address.district }}
+          </option>
+        </select>
+        <select v-model="toLocation" name="toAddress">
+        <option disabled value="">Select a location</option>
+          <option v-for="address in addresses" :value="address.id">
+          {{ address.city }}, {{ address.district }}
+          </option>
+        </select>
+        <button>Update rides</button>
+        <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
+      </form>
+    </div>
+    <ViewRides :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" />
   </main>
 </template>

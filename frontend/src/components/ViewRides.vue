@@ -1,44 +1,79 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
-import AvailableRidesList from './AvailableRidesList.vue'
+import { ref, toRefs } from 'vue'
 import config from "@/config";
 
-const fromLocation = ref('')
-const toLocation = ref('')
-const dateVal = ref('')
-const keyUpdate = ref(0)
+const props = defineProps({
+  filterOn: {
+    type: Boolean,
+    required: true
+  },
+  from_location: {
+    type: String,
+    required: false
+  },
+  to_location: {
+    type: String,
+    required: false
+  },
+  date: {
+    type: Date,
+    required: false
+  }
+})
 
+const { filterOn, from_location, to_location, date } = toRefs(props)
 
-const addresses = ref([])
+console.log(filterOn.value)
 
-fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
+const rides = ref([])
 
-function updateRides() {
-  // force update but changing key val
-  keyUpdate.value += 1
+function filterRides(ridesArray) {
+  if (filterOn.value) {
+    console.log("RUNNING FILTER")
+    console.log(from_location)
+    var filteredRides = []
+    for (let ride of ridesArray) {
+      console.log("Printing ride")
+      console.log(ride)
+      if (ride.startId == from_location.value && ride.destId == to_location.value) {
+        filteredRides.push(ride)
+      }
+    }
+    console.log(filteredRides)
+    return filteredRides
+  }
+  else {
+    return ridesArray
+  }
 }
+
+fetch(`${config.apiBaseUrl}/rides`)
+      .then(res=>res.json()).then(data=>rides.value=filterRides(data)).then(data=>console.log(data)).catch(err=>console.log(err))
 
 </script>
 
+<!-- 
+this.startId = startId;
+this.destId = destId;
+this.driverId = driverId;
+this.passengerLimit = passengerLimit;
+this.startTimestamp = startTimestamp;
+this.isSmokingAllowed = isSmokingAllowed;
+this.isPetTransportAllowed = isPetTransportAllowed;
+this.description = description; -->
+
 <template>
-  <div class="view_rides">
-    <form @submit.prevent="updateRides">
-    <select v-model="fromLocation" name="fromAddress">
-      <option disabled value="">Select a location</option>
-      <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}, {{ address.district }}
-      </option>
-    </select>
-    <select v-model="toLocation" name="toAddress">
-    <option disabled value="">Select a location</option>
-      <option v-for="address in addresses" :value="address.id">
-      {{ address.city }}, {{ address.district }}
-      </option>
-    </select>
-    <button>Update rides</button>
-    <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
-  </form>
+  <div>
+
+    <h3>Viewing rides (filter: {{ filterOn }})</h3>
+    <h5>From: {{ from_location }}</h5>
+    <li v-for="ride in rides">
+      <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
+      <h4>{{ ride.startId }}->{{ ride.destId }}</h4>
+      <h5>Driver: {{ ride.driverId }}, Passengers: 0/{{ ride.passengerLimit }}</h5>
+      <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
+      <h5>Description {{ ride.description }}</h5>
+    </li>
   </div>
 </template>
-

@@ -22,11 +22,11 @@ function addRide() {
       destId: toLocation.value,
       driverId: 0,
       passengerLimit: numberOfPassengers.value,
-      date: +new Date(dateVal.value), // gives unix timestamp of date and time
+      startTimestamp: +new Date(dateVal.value), // gives unix timestamp of date and time
       description: description.value
      })
     }).then(res=>console.log(res))
-    .then(res=>location.reload())
+    // .then(res=>location.reload())
   }
   
 
