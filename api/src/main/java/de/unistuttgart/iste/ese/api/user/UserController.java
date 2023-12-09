@@ -56,7 +56,7 @@ public class UserController {
     public User createUser(@Valid @RequestBody User requestBody) {
         User user = new User(requestBody.getFirstName(), requestBody.getLastName(),
             requestBody.getEmail(), requestBody.getDescription(),
-            requestBody.getCarDescription());
+            requestBody.getCarDescription(), requestBody.getPassword());
         User savedUser = userRepository.save(user);
         return savedUser;
     }
@@ -68,6 +68,21 @@ public class UserController {
         User userToUpdate = userRepository.findById(id);
         if (userToUpdate != null) {
             return userRepository.save(requestBody);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with ID %s not found!", id));
+    }
+
+    @PutMapping("users/{id}/changepassword")
+    public User updatePassword(@PathVariable("id") long id, @Valid @RequestBody UserPasswordChange requestBody) {
+        User userToUpdate = userRepository.findById(id);
+        if (userToUpdate != null) {
+            if (userToUpdate.getPassword().equals(requestBody.getOldPassword())) {
+                userToUpdate.setPassword(requestBody.getNewPassword());
+                return userRepository.save(userToUpdate);
+            }
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    String.format("Passwords do not match!"));
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("User with ID %s not found!", id));
