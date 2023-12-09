@@ -38,7 +38,6 @@ public class User {
     @NotNull
     private String description;
 
-    @NotNull
     private String carDescription;
 
     // empty default constructor is necessary for JPA
