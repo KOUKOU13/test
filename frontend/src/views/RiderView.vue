@@ -7,6 +7,7 @@ import config from "@/config";
 let name = "";
 
 const filterOnVal = ref(false)
+const showRidesRegisteredFor = ref(true)
 
 const fromLocation = ref('')
 const toLocation = ref('')
@@ -30,7 +31,7 @@ function submit() {
     <h1>Rider View</h1>
     <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
       <div id="showingFilters" v-if="filterOnVal">
-    <form @submit.prevent="updateRides"> 
+      <form @submit.prevent="updateRides"> 
         <select v-model="fromLocation" name="fromAddress">
           <option disabled value="">Select a location</option>
           <option v-for="address in addresses" :value="address.id">
@@ -47,6 +48,6 @@ function submit() {
         <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
       </form>
     </div>
-    <ViewRides :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" />
+    <ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" />
   </main>
 </template>

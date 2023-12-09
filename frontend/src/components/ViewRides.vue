@@ -10,6 +10,10 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
+  showRidesUserRegisteredFor: {
+    type: Boolean,
+    required: true
+  },
   from_location: {
     type: String,
     required: false
@@ -21,12 +25,12 @@ const props = defineProps({
   date: {
     type: Date,
     required: false
-  }
+  },
 })
 
-const { filterOn, from_location, to_location, date } = toRefs(props)
+const { filterOn, from_location, to_location, date, showRidesUserRegisteredFor } = toRefs(props)
 
-console.log(filterOn.value)
+console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref([])
 
@@ -52,7 +56,7 @@ function filterRides(ridesArray) {
 
 function registerUserForRide(rideId) {
   console.log(`register for ${rideId}`)
-  fetch(`${config.apiBaseUrl}/rides`, {
+  fetch(`${config.apiBaseUrl}/userrides`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
