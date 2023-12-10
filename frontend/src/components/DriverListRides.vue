@@ -3,6 +3,8 @@
 import { ref, toRefs } from 'vue'
 import AvailableRidesList from './AvailableRidesList.vue'
 import config from "@/config";
+import { useRouter } from "vue-router"
+
 
 const props = defineProps({
   driverId: {
@@ -11,6 +13,8 @@ const props = defineProps({
   },
 })
 
+const router = useRouter()
+
 const { driverId } = toRefs(props)
 const rides = ref([])
 
@@ -18,6 +22,11 @@ function updateRides() {
   fetch(`${config.apiBaseUrl}/rides`)
     .then(res=>res.json()).then(data=>rides.value=filterRides(data)).then(data=>console.log(data)).catch(err=>console.log(err))
 
+}
+
+function goToRideEditView(rideId) {
+  console.log(`RIDE ID IS: ${rideId}`)
+  router.push({ name: 'rideView', params: {rideId: rideId }})
 }
 
 function filterRides(ridesArray) {
@@ -49,9 +58,10 @@ updateRides()
   <div v-if="rides.length > 0">
     <h3>Upcoming rides for driver with ID: {{ driverId }}</h3>
     <li v-for="ride in rides">
+      <h4>Ride ID: {{ ride.id }}</h4>
       <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
       <button @click="() => {removeRide(ride.id)}">Remove ride</button>
-      <button @click="this.$router.push({ name: 'rideView', props: true, params: {rideId: ride.id }})">Edit ride details</button>
+      <button @click="goToRideEditView(ride.id)">Edit ride details</button>
     </li>
   </div>
   <div v-else>

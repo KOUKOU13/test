@@ -56,7 +56,8 @@ const router = createRouter({
     {
       path: '/rideView',
       name: 'rideView',
-      component: RideEditView
+      component: RideEditView,
+      props: true
     }
   ]
 })
