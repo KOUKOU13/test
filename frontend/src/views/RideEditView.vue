@@ -71,6 +71,7 @@ function updateData() {
 
       startId: fromLocation.value,
       destId: toLocation.value,
+      driverId: userId,
 
       passengerLimit: numberOfPassengers.value,
       price: price.value,
