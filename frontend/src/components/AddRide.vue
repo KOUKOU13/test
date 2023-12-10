@@ -62,7 +62,8 @@ function addRide() {
       startTimestamp: +new Date(dateVal.value), // gives unix timestamp of date and time
       description: description.value,
       smokingAllowed: smokingAllowed.value,
-      petTransportAllowed: animalsAllowed.value
+      petTransportAllowed: animalsAllowed.value,
+      price: price.value,
      })
     }).then(res=>console.log(res))
     .then(res=>location.reload())

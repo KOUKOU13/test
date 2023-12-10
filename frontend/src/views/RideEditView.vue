@@ -49,7 +49,7 @@ function getDetails() {
       console.log(data)
       numberOfPassengers.value = data.passengerLimit
       dateVal.value = data.startTimestamp
-      // price.value = data
+      price.value = data.price
       description.value = data.description
       animalsAllowed.value = data.petTransportAllowed
       smokingAllowed.value = data.smokingAllowed
@@ -73,6 +73,7 @@ function updateData() {
       destId: toLocation.value,
 
       passengerLimit: numberOfPassengers.value,
+      price: price.value,
       // startTimestamp: +new Date(dateVal.value), // gives unix timestamp of date and time
       description: description.value,
       smokingAllowed: smokingAllowed.value,
