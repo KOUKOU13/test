@@ -51,6 +51,7 @@ updateRides()
     <li v-for="ride in rides">
       <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
       <button @click="() => {removeRide(ride.id)}">Remove ride</button>
+      <button @click="this.$router.push({ name: 'rideView', props: true, params: {rideId: ride.id }})">Edit ride details</button>
     </li>
   </div>
   <div v-else>

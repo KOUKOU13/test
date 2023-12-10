@@ -8,6 +8,7 @@ import UserRegistrationView from "@/views/UserRegistrationView.vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import EditProfileView from "@/views/EditProfileView.vue";
 import InviteFriendView from "@/views/InviteFriendView.vue";
+import RideEditView from "@/views/RideEditView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,11 @@ const router = createRouter({
       name: 'invitePage',
       component: InviteFriendView
     },
+    {
+      path: '/rideView',
+      name: 'rideView',
+      component: RideEditView
+    }
   ]
 })
 
