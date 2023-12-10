@@ -99,7 +99,8 @@ public class RideController {
         Ride Ride = new Ride(requestBody.getStartId(), requestBody.getDestId(),
             requestBody.getDriverId(), requestBody.getPassengerLimit(),
             requestBody.getStartTimestamp(), requestBody.isSmokingAllowed(),
-            requestBody.isPetTransportAllowed(), requestBody.getDescription());
+            requestBody.isPetTransportAllowed(), requestBody.getDescription(),
+            requestBody.getPrice());
         Ride savedRide = rideRepository.save(Ride);
         return savedRide;
     }
@@ -122,7 +123,7 @@ public class RideController {
         return rideRepository.save(new Ride(startAddress.getId(), dstAddress.getId(),
             requestBody.getDriverId(), requestBody.getPassengerLimit(),
             requestBody.getStartTimestamp(), requestBody.isSmokingAllowed(),
-            requestBody.isPetTransportAllowed(), requestBody.getDescription()));
+            requestBody.isPetTransportAllowed(), requestBody.getDescription(), requestBody.getPrice()));
     }
 
     // update a Ride

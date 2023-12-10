@@ -42,6 +42,9 @@ public class RideWithAddress {
     @NotNull
     private String description;
 
+    @NotNull
+    private double price;
+
     public RideWithAddress() {}
 
     public RideWithAddress(@NotNull String startCity, @NotNull String startPostCode, @NotNull String startDistrict,
@@ -156,5 +159,13 @@ public class RideWithAddress {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
