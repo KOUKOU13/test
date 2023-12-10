@@ -28,20 +28,6 @@ Der Nutzen hierfür ist es, z.B. zu beschreiben welches Auto dieser Nutzer besit
 
 ## Tests/Testprotokolle/Nachweis der Testabdeckung
 
-Bis jetzt nur manueller Test im Frontend und via Postman.
-z.B. können weitere Addressen hinzugefügt werden mit folgendem zugefügt werden:
-```
-POST localhost:8001/api/v1/addresses/
-Body: {
-  "city" : "stuttgart",
-  "postcode" : "70569",
-  "street" : "pfaffenwaldring",
-  "houseNumber" : 0
-}
-```
-Desweiteren können ebenfalls Nutzer und Fahrten manuell hinzugefügt werden.
-Testabdeckung ist nicht ausreichend und muss automatisiert werden.
-
 ### Nach dem Kundengespräch
 - Es wurden automatisierte Tests hinzugefügt für User / Ride / Address.
 - Die automatisierte Testabdeckung ist noch ungenügend - Insbesondere fehlen noch die Tests für die Controller und UserRides.
