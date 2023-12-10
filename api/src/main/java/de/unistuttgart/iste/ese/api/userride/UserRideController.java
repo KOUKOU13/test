@@ -85,7 +85,7 @@ public class UserRideController {
     public UserRide deleteUser(@PathVariable("id") long id) {
         UserRide userRideToDelete = userRideRepository.findById(id);
         if (userRideToDelete != null) {
-            userRepository.deleteById(id);
+            userRideRepository.deleteById(id);
             return userRideToDelete;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,

@@ -100,6 +100,27 @@ public class RideController {
         return savedRide;
     }
 
+    @PostMapping("/rides/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Ride createRideWithAddresses(@Valid @RequestBody RideWithAddress requestBody) {
+        Address startAddress = addressRepository.findByCityAndPostcodeAndDistrict(requestBody.getStartCity(), requestBody.getStartPostCode(), requestBody.getStartDistrict());
+        if (startAddress == null) {
+            startAddress = new Address(requestBody.getStartCity(), requestBody.getStartPostCode(), requestBody.getStartDistrict());
+            addressRepository.save(startAddress);
+        }
+
+        Address dstAddress = addressRepository.findByCityAndPostcodeAndDistrict(requestBody.getDstCity(), requestBody.getDstPostCode(), requestBody.getDstDistrict());
+        if (dstAddress == null) {
+            dstAddress = new Address(requestBody.getDstCity(), requestBody.getDstPostCode(), requestBody.getDstDistrict());
+            addressRepository.save(dstAddress);
+        }
+
+        return rideRepository.save(new Ride(startAddress.getId(), dstAddress.getId(),
+            requestBody.getDriverId(), requestBody.getPassengerLimit(),
+            requestBody.getStartTimestamp(), requestBody.isSmokingAllowed(),
+            requestBody.isPetTransportAllowed(), requestBody.getDescription()));
+    }
+
     // update a Ride
     @PutMapping("/rides/{id}")
     public Ride updateRide(@PathVariable("id") long id, @Valid @RequestBody Ride requestBody) {
