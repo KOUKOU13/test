@@ -29,6 +29,9 @@ function submit() {
 <template>
   <main>
     <h1>Rider View</h1>
+    <h3>Your registered rides:</h3>
+    <ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" />
+    <h1>Available rides:</h1>
     <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
       <div id="showingFilters" v-if="filterOnVal">
       <form @submit.prevent="updateRides"> 

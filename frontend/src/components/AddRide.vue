@@ -26,7 +26,7 @@ function addRide() {
       description: description.value
      })
     }).then(res=>console.log(res))
-    // .then(res=>location.reload())
+    .then(res=>location.reload())
   }
   
 
