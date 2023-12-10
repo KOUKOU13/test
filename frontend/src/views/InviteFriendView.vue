@@ -1,11 +1,12 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
+import config from "@/config";
 
 const friendEmail = ref('')
 
-let body = "Want to save money on your next ride and reduce your carbon footprint? Consider joining eMundo's car sharing service! " +
-            "To join simply go to the following link: ..."
+let body = `Want to save money on your next ride and reduce your carbon footprint? Consider joining eMundo's car sharing service! ` +
+            `To join simply go to the following link: ${config.apiBaseUrl}`
 
 </script>
 
