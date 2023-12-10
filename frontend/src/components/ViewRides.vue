@@ -155,6 +155,7 @@ this.description = description; -->
         <h5>Driver: {{ ride.driverId }}, Passengers: {{ getUserCountForRide(ride.id) }}/{{ ride.passengerLimit }}</h5>
         <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symbol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
         <h5>Description {{ ride.description }}</h5>
+        <h5>Price: {{ ride.price }}</h5>
         <button v-if="!isUserRegisteredForRide(ride.id)" @click="registerUserForRide(ride.id)">Register for this ride</button>
         <button v-else @click="deregisterUserFromRide(ride.id)">Deregister from ride</button>
       <!-- </div> -->
