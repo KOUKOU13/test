@@ -5,6 +5,7 @@ import { ref } from 'vue';
 import config from "@/config";
 
 let name = "";
+let loggedIn = localStorage.getItem("userID") ? true : false
 
 const filterOnVal = ref(false)
 const showRidesRegisteredFor = ref(true)
@@ -28,29 +29,34 @@ function submit() {
 
 <template>
   <main>
-    <h1>Rider View</h1>
-    <h3>Your registered rides:</h3>
-    <ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" />
-    <h1>Available rides:</h1>
-    <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
-      <div id="showingFilters" v-if="filterOnVal">
-      <form @submit.prevent="updateRides"> 
-        <select v-model="fromLocation" name="fromAddress">
+    <div v-if="loggedIn">
+      <h1>Rider View</h1>
+      <h3>Your registered rides:</h3>
+      <ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" />
+      <h1>Available rides:</h1>
+      <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
+        <div id="showingFilters" v-if="filterOnVal">
+        <form @submit.prevent="updateRides"> 
+          <select v-model="fromLocation" name="fromAddress">
+            <option disabled value="">Select a location</option>
+            <option v-for="address in addresses" :value="address.id">
+            {{ address.city }}, {{ address.district }}
+            </option>
+          </select>
+          <select v-model="toLocation" name="toAddress">
           <option disabled value="">Select a location</option>
-          <option v-for="address in addresses" :value="address.id">
-          {{ address.city }}, {{ address.district }}
-          </option>
-        </select>
-        <select v-model="toLocation" name="toAddress">
-        <option disabled value="">Select a location</option>
-          <option v-for="address in addresses" :value="address.id">
-          {{ address.city }}, {{ address.district }}
-          </option>
-        </select>
-        <button>Update rides</button>
-        <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
-      </form>
+            <option v-for="address in addresses" :value="address.id">
+            {{ address.city }}, {{ address.district }}
+            </option>
+          </select>
+          <button>Update rides</button>
+          <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
+        </form>
+      </div>
+      <ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" />
     </div>
-    <ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" />
+    <div v-else>
+      <h3>You are not logged in</h3>
+    </div>
   </main>
 </template>

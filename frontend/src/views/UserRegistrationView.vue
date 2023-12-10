@@ -39,7 +39,7 @@ function registerUser() {
     .then(res=>{
         if (res.status != 201) {throw "Registration failed"}
       })
-    .then(res=>router.push({ path: '/' }))
+    .then(res=>router.push({ path: '/login' }))
     .catch(err=>showToast(new Toast("Registration failed", "Ensure all fields are filled in correctly")))
 
 }
