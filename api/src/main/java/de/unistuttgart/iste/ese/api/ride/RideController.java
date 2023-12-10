@@ -3,6 +3,7 @@ package de.unistuttgart.iste.ese.api.ride;
 import de.unistuttgart.iste.ese.api.ApiVersion1;
 import de.unistuttgart.iste.ese.api.address.Address;
 import de.unistuttgart.iste.ese.api.address.AddressRepository;
+import de.unistuttgart.iste.ese.api.userride.UserRideRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class RideController {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private UserRideRepository userRideRepository;
 
     // executed after start-up and dependency injection
     @PostConstruct
@@ -141,6 +145,9 @@ public class RideController {
         Ride RideToDelete = rideRepository.findById(id);
         if (RideToDelete != null) {
             rideRepository.deleteById(id);
+
+            userRideRepository.deleteAll(userRideRepository.findByRideId(id));
+
             return RideToDelete;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
