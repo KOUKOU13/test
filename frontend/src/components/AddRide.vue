@@ -21,6 +21,8 @@ const description = ref('')
 const animalsAllowed = ref(true)
 const smokingAllowed = ref(false)
 
+const userId = localStorage.getItem("userID")
+
 function addRide() {
 
   // fetch(`${config.apiBaseUrl}/rides`, {
@@ -55,7 +57,7 @@ function addRide() {
       dstCity: toLocationCity.value,
       dstPostCode: toLocationPost.value,
       dstDistrict: toLocationDistrict.value,
-      driverId: 0,
+      driverId: userId,
       passengerLimit: numberOfPassengers.value,
       startTimestamp: +new Date(dateVal.value), // gives unix timestamp of date and time
       description: description.value,

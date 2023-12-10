@@ -2,7 +2,7 @@
 
 import { ref, toRefs, reactive, computed } from 'vue';
 import config from "@/config";
-
+import {showToast, Toast} from "@/ts/toasts";
 
 // const props = defineProps({
 //   rideId: {
@@ -10,6 +10,8 @@ import config from "@/config";
 //     required: true
 //   },
 // })
+
+const userId = localStorage.getItem("userID")
 
 // const { rideId } = toRefs(props)
 const rideFetched = ref(false)
@@ -34,6 +36,13 @@ function getDetails() {
   fetch(`${config.apiBaseUrl}/rides/${rideID.value}`)
     .then(res=>res.json())
     .then(data=>{
+      if (data.driverId != userId) {
+        // console.log("here")
+        throw "Driver not owner"
+      }
+      return data
+    })
+    .then(data=>{
       fromLocation.value = data.startId,
       toLocation.value = data.destId,
       rideFetched.value = true
@@ -45,7 +54,7 @@ function getDetails() {
       animalsAllowed.value = data.petTransportAllowed
       smokingAllowed.value = data.smokingAllowed
     })
-    .catch(err=>console.log(err))
+    .catch(err=>showToast(new Toast("Driver cannot edit this ride", "Please select a different ride")))
 }
 
 function updateData() {

@@ -8,13 +8,14 @@ import { ref } from 'vue'
 const addRideShowing = ref(false)
 
 let loggedIn = localStorage.getItem("userID") ? true : false
+const userId = localStorage.getItem("userID")
 
 </script>
 
 <template>
     <div v-if="loggedIn">
         <h1>Driver View</h1>
-        <DriverListRides driverId="0" />
+        <DriverListRides :driverId="userId" />
         <button v-if="!addRideShowing" @click="addRideShowing=!addRideShowing">Add new ride</button>
         <button v-if="addRideShowing" @click="addRideShowing=!addRideShowing">Hide</button>
         <AddRide v-if="addRideShowing" />
