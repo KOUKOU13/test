@@ -15,7 +15,8 @@ const isDriver = ref(false)
 
 const router = useRouter()
 const passwordsMatch = computed(() => password.value == passwordConfirmation.value)
-// const licensePlateNum = ref('')
+const carDescription = ref('')
+const userDescription = ref('')
 
 
 function registerUser() {
@@ -32,8 +33,8 @@ function registerUser() {
         lastName: lastName.value,
         email: email.value, // temporary
         password: password.value,
-        description: "default description",
-        carDescription: "default car description",
+        description: userDescription.value,
+        carDescription: carDescription.value,
       })
     })
     .then(res=>{
@@ -58,9 +59,13 @@ function registerUser() {
     <input v-if="password.length > 0" v-model="passwordConfirmation" placeholder="Confirm password" type="password">
     <h5 v-if="!passwordsMatch" style="color:red;">Passwords don't match</h5>
     <br>
+    <input v-model="userDescription" placeholder="Enter user description">
+    <br>
     <label><input type="checkbox" v-model="isDriver">Register as driver?</label>
     <br>
-    <!-- <input v-if="isDriver" v-model="licensePlateNum" placeholder="License plate number"> -->
+    <div v-if="isDriver">
+    <input v-if="isDriver" v-model="carDescription" placeholder="Enter car description">
+    </div>
     <br>
     <!-- <button :disabled="password != confirmPassword">Register</button> -->
     <button>Register</button>

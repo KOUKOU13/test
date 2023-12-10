@@ -77,10 +77,11 @@
       <button v-if="!showChangePassword" @click="showChangePassword=true">Change password</button>
       <button @click="reloadPage">Reset</button>
       <div v-if="showChangePassword" id="changePasswordDiv">
-        <input v-model="oldPassword" placeholder="Current password">
-        <input v-model="newPassword" placeholder="Enter new password">
-        <input v-model="newPasswordConfirmation" placeholder="Confirm new password">
+        <input type="password" v-model="oldPassword" placeholder="Current password">
+        <input type="password" v-model="newPassword" placeholder="Enter new password">
+        <input type="password" v-model="newPasswordConfirmation" placeholder="Confirm new password">
         <h5 v-if="!passwordsMatch" style="color:red;">Passwords don't match</h5>
+        <br>
         <button @click="updatePassword">Update password</button>
       </div>
       <button>Update details</button>
