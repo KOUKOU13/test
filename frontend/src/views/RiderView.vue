@@ -29,31 +29,43 @@ function submit() {
 
 <template>
   <main>
-    <!--h3>Your registered rides:</h3-->
-    
-    <div class="px-20">
-      <table fixed-header='true' class="w-full">
-        <thead class="bg-dark-400">
-          <tr>
-            <th class="table-header">Start</th>
-            <th class="table-header">Destination</th>
-            <th class="table-header">Driver</th>
-            <th class="table-header">Passengers</th>
-            <th class="table-header">Smoking Allowed</th>
-            <th class="table-header">Pets Allowed</th>
-            <th class="table-header">Price</th>
-            <th class="table-header"></th>
-            <th class="table-header"></th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-dark-400">
-          <ViewRides/>
-        </tbody>
-      </table>
+    <div class="mx-[10rem]">
+      <h1 class="bg-primary-200 text-dark-100 mt-3 py-2 font-black w-full text-center text-3xl subpixel-antialiased rounded-t-3xl">
+        Search for a ride
+      </h1>
+      <div class="py-1.5"></div>
+      <div class="flex flex-row">
+        <div class="py-[12rem] bg-dark-100 w-6/12 mr-1.5">
+
+        </div>
+        <div class="py-[12rem] bg-dark-100 w-6/12 ml-1.5">
+        
+        </div>
+      </div>
+      <div class="py-1.5"></div>
+      <div class="overflow-auto">
+        <table fixed-header='true' class="w-full">
+          <thead class="bg-dark-400">
+            <tr>
+              <th class="table-header">Start</th>
+              <th class="table-header">Destination</th>
+              <th class="table-header">Driver</th>
+              <th class="table-header">Passengers</th>
+              <th class="table-header">Date</th>
+              <th class="table-header">Price</th>
+              <th class="table-header"></th>
+              <th class="table-header"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-dark-400">
+            <ViewRides />
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!--ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" /-->
-    <h1>Available rides:</h1>
+    <!--h1>Available rides:</h1>
     <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
       <div id="showingFilters" v-if="filterOnVal">
       <form @submit.prevent="updateRides"> 
@@ -72,7 +84,7 @@ function submit() {
         <button>Update rides</button>
         <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
       </form>
-    </div>
+    </div-->
     <!--ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" /-->
   </main>
 </template>

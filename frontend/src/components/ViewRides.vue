@@ -3,6 +3,9 @@
 import { ref, toRefs, reactive, computed } from 'vue'
 import config from "@/config";
 
+import type { Ride } from "../interface/Ride.vue"
+import type { UserRide } from "../interface/UserRide.vue"
+
 const userId = localStorage.getItem("userID")
 let loggedIn = localStorage.getItem("userID") ? true : false
 
@@ -33,12 +36,14 @@ const { filterOn, from_location, to_location, date, showRidesUserRegisteredFor }
 
 console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
-const rides = ref([])
-const userrides = ref([])
+const rides = ref<Ride[]>([])
+const userrides = ref<UserRide[]>([])
 const addresses = ref([])
 const users = ref([])
+const modalOpen = ref<boolean>()
+const modalRide = ref<Ride>()
 
-function filterRides(ridesArray) {
+function filterRides(ridesArray: Ride[]) {
   if (filterOn.value) {
     console.log("RUNNING FILTER")
     console.log(from_location)
@@ -58,7 +63,7 @@ function filterRides(ridesArray) {
   }
 }
 
-function registerUserForRide(rideId) {
+function registerUserForRide(rideId : number) {
   console.log(`register for ${rideId}`)
   fetch(`${config.apiBaseUrl}/userrides`, {
     method: "POST",
@@ -70,7 +75,7 @@ function registerUserForRide(rideId) {
     }).then(res=>console.log(`${res} printin`))
 }
 
-function deregisterUserFromRide(rideId) {
+function deregisterUserFromRide(rideId : number) {
   console.log(`deregister for ${rideId}`)
 
   for (let entry of userrides.value) {
@@ -89,7 +94,7 @@ function deregisterUserFromRide(rideId) {
   }
 }
 
-function getUserCountForRide(rideId) {
+function getUserCountForRide(rideId : number) {
   let count = 0
   for (let entry of userrides.value) {
     if (entry.rideId == rideId) {
@@ -99,7 +104,7 @@ function getUserCountForRide(rideId) {
   return count
 }
 
-function getAddressStringFromId(addressId) {
+function getAddressStringFromId(addressId : number) {
   let count = 0
   for (let entry of addresses.value) {
     if (entry.id == addressId) {
@@ -109,7 +114,7 @@ function getAddressStringFromId(addressId) {
   return "Unknown"
 }
 
-function getUserStringFromId(userId) {
+function getUserStringFromId(userId : number) {
   let count = 0
   for (let entry of users.value) {
     if (entry.id == userId) {
@@ -119,7 +124,7 @@ function getUserStringFromId(userId) {
   return "Unknown"
 }
 
-function isUserRegisteredForRide(rideId) {
+function isUserRegisteredForRide(rideId : number) {
   for (let entry of userrides.value) {
     if (entry.rideId == rideId) {
       if (entry.userId == userId) {
@@ -128,6 +133,11 @@ function isUserRegisteredForRide(rideId) {
     }
   }
   return false
+}
+
+function getDateFromUnixTimestamp(timestamp : number) {
+  var date = new Date(timestamp * 1000)
+  return date.toUTCString()
 }
 
 fetch(`${config.apiBaseUrl}/rides`)
@@ -142,8 +152,6 @@ fetch(`${config.apiBaseUrl}/userrides`)
         console.log(res)
         return res.json()
       })
-      // .then(data=>rides.value=filterRides(data))
-      // .then(data=>console.log(data))
       .then((data) => {
         console.log("usserrides data thing")
         console.log(data)
@@ -168,43 +176,19 @@ fetch(`${config.apiBaseUrl}/users`)
 
 </script>
 
-<!-- 
-this.startId = startId;
-this.destId = destId;
-this.driverId = driverId;
-this.passengerLimit = passengerLimit;
-this.startTimestamp = startTimestamp;
-this.isSmokingAllowed = isSmokingAllowed;
-this.isPetTransportAllowed = isPetTransportAllowed;
-this.description = description; -->
-
-<!--template>
-  <div>
-    <h3>Viewing rides (filter: {{ filterOn }})</h3>
-    <h5>From: {{ from_location }}</h5>
-    <li v-for="ride in filteredByRegisteredRides">
-        <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
-        <h4>{{ ride.startId }}->{{ ride.destId }}</h4>
-        <h5>Driver: {{ ride.driverId }}, Passengers: {{ getUserCountForRide(ride.id) }}/{{ ride.passengerLimit }}</h5>
-        <h5>Start datetime: {{ ride.startTimestamp }}, Smoke symbol{{ ride.isSmokingAllowed }}, pet symbol{{ ride.isPetTransportAllowed }}</h5>
-        <h5>Description {{ ride.description }}</h5>
-        <h5>Price: {{ ride.price }}</h5>
-        <button v-if="!isUserRegisteredForRide(ride.id)" @click="registerUserForRide(ride.id)">Register for this ride</button>
-        <button v-else @click="deregisterUserFromRide(ride.id)">Deregister from ride</button>
-    </li>
-  </div>
-</template-->
-
 <template>
     <tr v-for="ride in rides" class="odd:bg-dark-100 even:bg-dark-200 hover:bg-dark-600 hover:text-dark-100">
       <td class="text-center"> {{ getAddressStringFromId(ride.startId) }} </td>
       <td class="text-center"> {{ getAddressStringFromId(ride.destId) }} </td>
       <td class="text-center"> {{ getUserStringFromId(ride.driverId) }} </td>
       <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
-      <td class="text-center"> <div v-if="ride.isSmokingAllowed">true</div><div v-else>false</div> </td>
-      <td class="text-center"> <div v-if="ride.isPetTransportAllowed">true</div><div v-else>false</div> </td>
+      <td class="text-center"> {{ getDateFromUnixTimestamp(ride.startTimestamp) }} </td>
       <td class="text-center"> {{ ride.price }}€ </td>
-      <td class="text-center"> <button class="button-no-bg text-center w-full">Additional Info</button> </td>
+      <td class="text-center">
+        <button class="button-no-bg text-center w-full"
+          @click="modalOpen=true; modalRide=ride;">
+          Additional Info
+        </button> </td>
       <td class="text-center">
         <div v-if="loggedIn">
           <button v-if="!isUserRegisteredForRide(ride.id)"
@@ -225,4 +209,32 @@ this.description = description; -->
         </div>
       </td>
     </tr>
+    
+    <teleport to="body">
+        <div class="modal" v-if="modalOpen">
+            <div>
+              <h1 class="font-bold w-full text-center">Description</h1>
+              {{ modalRide?.description }}
+              {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
+              <button class="button text-center w-full"
+                @click="modalOpen=false;">
+                close
+              </button>
+            </div>
+        </div>
+    </teleport>
 </template>
+
+<style>
+.root {
+  @apply relative;
+}
+
+.modal {
+  @apply fixed top-0 left-0 bg-black-alpha-900 w-screen h-screen flex justify-center align-middle items-center backdrop-blur-sm;
+}
+
+.modal > div {
+  @apply bg-dark-200 p-4 border-2 rounded-3xl w-[720px] h-[480px];
+}
+</style>
