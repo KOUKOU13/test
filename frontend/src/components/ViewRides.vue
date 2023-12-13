@@ -4,6 +4,7 @@ import { ref, toRefs, reactive, computed } from 'vue'
 import config from "@/config";
 
 const userId = localStorage.getItem("userID")
+let loggedIn = localStorage.getItem("userID") ? true : false
 
 const props = defineProps({
   filterOn: {
@@ -34,6 +35,8 @@ console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref([])
 const userrides = ref([])
+const addresses = ref([])
+const users = ref([])
 
 function filterRides(ridesArray) {
   if (filterOn.value) {
@@ -96,6 +99,26 @@ function getUserCountForRide(rideId) {
   return count
 }
 
+function getAddressStringFromId(addressId) {
+  let count = 0
+  for (let entry of addresses.value) {
+    if (entry.id == addressId) {
+      return entry.city + ", " + entry.district
+    }
+  }
+  return "Unknown"
+}
+
+function getUserStringFromId(userId) {
+  let count = 0
+  for (let entry of users.value) {
+    if (entry.id == userId) {
+      return entry.firstName + " " + entry.lastName
+    }
+  }
+  return "Unknown"
+}
+
 function isUserRegisteredForRide(rideId) {
   for (let entry of userrides.value) {
     if (entry.rideId == rideId) {
@@ -110,7 +133,7 @@ function isUserRegisteredForRide(rideId) {
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
       .then(data=>rides.value=filterRides(data))
-      .then(data=>console.log(data))
+      .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
 fetch(`${config.apiBaseUrl}/userrides`)
@@ -129,6 +152,17 @@ fetch(`${config.apiBaseUrl}/userrides`)
       })
       .catch(err=>console.log(err))
 
+fetch(`${config.apiBaseUrl}/addresses`)
+      .then(res=>res.json())
+      .then(data=>addresses.value=data)
+      .then(data=>console.log("Addresses: " + JSON.stringify(data)))
+      .catch(err=>console.log("Error fetching addresses: " + err))
+      
+fetch(`${config.apiBaseUrl}/users`)
+      .then(res=>res.json())
+      .then(data=>users.value=data)
+      .then(data=>console.log("Users: " + JSON.stringify(data)))
+      .catch(err=>console.log("Error fetching users: " + err))
 
   const filteredByRegisteredRides = computed(()=>rides.value.filter(ride => showRidesUserRegisteredFor.value == isUserRegisteredForRide(ride.id)))
 
@@ -144,12 +178,11 @@ this.isSmokingAllowed = isSmokingAllowed;
 this.isPetTransportAllowed = isPetTransportAllowed;
 this.description = description; -->
 
-<template>
+<!--template>
   <div>
     <h3>Viewing rides (filter: {{ filterOn }})</h3>
     <h5>From: {{ from_location }}</h5>
     <li v-for="ride in filteredByRegisteredRides">
-      <!-- <div v-if="showRidesUserRegisteredFor == isUserRegisteredForRide(ride.id)"> -->
         <h4>Driver ID: {{ ride.driverId }}, Passenger Limit: {{ ride.passengerLimit }}</h4>
         <h4>{{ ride.startId }}->{{ ride.destId }}</h4>
         <h5>Driver: {{ ride.driverId }}, Passengers: {{ getUserCountForRide(ride.id) }}/{{ ride.passengerLimit }}</h5>
@@ -158,7 +191,38 @@ this.description = description; -->
         <h5>Price: {{ ride.price }}</h5>
         <button v-if="!isUserRegisteredForRide(ride.id)" @click="registerUserForRide(ride.id)">Register for this ride</button>
         <button v-else @click="deregisterUserFromRide(ride.id)">Deregister from ride</button>
-      <!-- </div> -->
     </li>
   </div>
+</template-->
+
+<template>
+    <tr v-for="ride in rides" class="odd:bg-dark-100 even:bg-dark-200 hover:bg-dark-600 hover:text-dark-100">
+      <td class="text-center"> {{ getAddressStringFromId(ride.startId) }} </td>
+      <td class="text-center"> {{ getAddressStringFromId(ride.destId) }} </td>
+      <td class="text-center"> {{ getUserStringFromId(ride.driverId) }} </td>
+      <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
+      <td class="text-center"> <div v-if="ride.isSmokingAllowed">true</div><div v-else>false</div> </td>
+      <td class="text-center"> <div v-if="ride.isPetTransportAllowed">true</div><div v-else>false</div> </td>
+      <td class="text-center"> {{ ride.price }}€ </td>
+      <td class="text-center"> <button class="button-no-bg text-center w-full">Additional Info</button> </td>
+      <td class="text-center">
+        <div v-if="loggedIn">
+          <button v-if="!isUserRegisteredForRide(ride.id)"
+            @click="registerUserForRide(ride.id)"
+            class="button text-center w-full">
+            Apply
+          </button>
+          <button v-else
+            @click="deregisterUserFromRide(ride.id)"
+            class="button text-center w-full">
+            Deregister from ride
+          </button>
+        </div>
+        <div v-else>
+          <button class="button text-center w-full">
+            Log in to apply!
+          </button>
+        </div>
+      </td>
+    </tr>
 </template>

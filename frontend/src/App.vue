@@ -18,7 +18,8 @@ function logoutFunc() {
 </script>
 
 <template>
-<div :class="{ 'dark-mode': isDarkMode,'light-mode': !isDarkMode, }">
+<!--<div :class="{ 'dark-mode': isDarkMode,'light-mode': !isDarkMode, }">-->
+<div>
   <div id="app">
     <Header isHeaderContentStart>
       <template v-slot:headernav>
@@ -117,6 +118,8 @@ export default {
 };
 </script>
 
+<style src="./assets/tailwind.css"/>
+<!--
 <style scoped>
 /* App.vue styles */
 /* Import the style.css file from the assets folder */
@@ -159,3 +162,4 @@ body {
   font-weight: bold; /* Adjust the font weight */
 }
 </style>
+-->

@@ -96,7 +96,7 @@ function addRide() {
       <input v-model="description" type="textbox" placeholder="Add description">
       <label><input type="checkbox" v-model="smokingAllowed">Smoking allowed?</label>
       <label><input type="checkbox" v-model="animalsAllowed">Animals allowed?</label>
-      <button>Add ride</button>
+      <button class="button">Add ride</button>
 
   </form>
   </div>

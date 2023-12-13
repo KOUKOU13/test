@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+    @apply rounded-full bg-primary-200 text-dark-100 font-bold px-3 py-1.5 hover:bg-primary-400
+}
+
+.button-no-bg {
+    @apply rounded-full text-primary-200 font-bold px-3 py-1.5
+}
+
+.table-header {
+    @apply py-1 px-2.5 font-bold text-lg tracking-wide text-center
+}

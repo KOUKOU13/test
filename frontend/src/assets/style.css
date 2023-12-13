@@ -1,28 +1,32 @@
- body {
-    margin : 0;
-    font-family: system-ui;
- }
- .HomeView {
-    background-color: aqua;
-    background-image: url();
-    color: white;
+body {
+   margin : 0;
+   font-family: system-ui;
+}
+.HomeView {
+   background-color: aqua;
+   background-image: url();
+   color: white;
 }
 /* styles.css or styles.scss */
 :root {
-   --background-color: #fff; /* light mode background color */
-   --text-color: #333; /* light mode text color */
- }
- 
- body {
-   background-color: var(--background-color);
-   color: var(--text-color);
- }
- /* App.vue styles */
-.dark-mode {
-   background-color: #333; /* Dark mode background color */
-   color: #e86c6c; /* Dark mode text color */
- }
- .light-mode {
-   background-color: #333; /* Dark mode background color */
-   color: #87a2ed; /* Dark mode text color */
- }
+  --background-color: #fff; /* light mode background color */
+  --text-color: #333; /* light mode text color */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+/* App.vue styles */
+dark-mode {
+  background-color: #333; /* Dark mode background color */
+  color: #e86c6c; /* Dark mode text color */
+}
+.light-mode {
+  background-color: #333; /* Dark mode background color */
+  color: #87a2ed; /* Dark mode text color */
+}
+
+.btn {
+  @apply rounded-full py-2 px-3 text-xs font-bold cursor-pointer bg-neutral-50;
+}

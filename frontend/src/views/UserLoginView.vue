@@ -14,7 +14,7 @@ const email = ref('')
 
 function loginUser() {
 
-  fetch(`${config.apiBaseUrl}/users/login/${email.value}`, {
+  fetch(`${config.apiBaseUrl}/users/login/${email.value.toLowerCase()}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

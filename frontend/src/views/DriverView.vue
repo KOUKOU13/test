@@ -16,8 +16,8 @@ const userId = localStorage.getItem("userID")
     <div v-if="loggedIn">
         <h1>Driver View</h1>
         <DriverListRides :driverId="userId" />
-        <button v-if="!addRideShowing" @click="addRideShowing=!addRideShowing">Add new ride</button>
-        <button v-if="addRideShowing" @click="addRideShowing=!addRideShowing">Hide</button>
+        <button v-if="!addRideShowing" @click="addRideShowing=!addRideShowing" class="button">Add new ride</button>
+        <button v-if="addRideShowing" @click="addRideShowing=!addRideShowing" class="button">Hide</button>
         <AddRide v-if="addRideShowing" />
     </div>
     <div v-else>

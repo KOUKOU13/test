@@ -31,7 +31,7 @@ function registerUser() {
       body: JSON.stringify({
         firstName: firstName.value,
         lastName: lastName.value,
-        email: email.value, // temporary
+        email: email.value.toLowerCase(), // temporary
         password: password.value,
         description: userDescription.value,
         carDescription: carDescription.value,
