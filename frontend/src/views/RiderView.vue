@@ -29,62 +29,67 @@ function submit() {
 
 <template>
   <main>
-    <div class="mx-[10rem]">
-      <h1 class="bg-primary-200 text-dark-100 mt-3 py-2 font-black w-full text-center text-3xl subpixel-antialiased rounded-t-3xl">
-        Search for a ride
-      </h1>
-      <div class="py-1.5"></div>
-      <div class="flex flex-row">
-        <div class="py-[12rem] bg-dark-100 w-6/12 mr-1.5">
+    <div v-if="loggedIn">
+      <div class="mx-[10rem]">
+        <h1 class="bg-primary-200 text-dark-100 mt-3 py-2 font-black w-full text-center text-3xl subpixel-antialiased rounded-t-3xl">
+          Search for a ride
+        </h1>
+        <div class="py-1.5"></div>
+        <div class="flex flex-row">
+          <div class="py-[12rem] bg-dark-100 w-6/12 mr-1.5">
 
+          </div>
+          <div class="py-[12rem] bg-dark-100 w-6/12 ml-1.5">
+          
+          </div>
         </div>
-        <div class="py-[12rem] bg-dark-100 w-6/12 ml-1.5">
-        
+        <div class="py-1.5"></div>
+        <div class="overflow-auto">
+          <table fixed-header='true' class="w-full">
+            <thead class="bg-dark-400">
+              <tr>
+                <th class="table-header">Start</th>
+                <th class="table-header">Destination</th>
+                <th class="table-header">Driver</th>
+                <th class="table-header">Passengers</th>
+                <th class="table-header">Date</th>
+                <th class="table-header">Price</th>
+                <th class="table-header"></th>
+                <th class="table-header"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-dark-400">
+              <ViewRides />
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="py-1.5"></div>
-      <div class="overflow-auto">
-        <table fixed-header='true' class="w-full">
-          <thead class="bg-dark-400">
-            <tr>
-              <th class="table-header">Start</th>
-              <th class="table-header">Destination</th>
-              <th class="table-header">Driver</th>
-              <th class="table-header">Passengers</th>
-              <th class="table-header">Date</th>
-              <th class="table-header">Price</th>
-              <th class="table-header"></th>
-              <th class="table-header"></th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-dark-400">
-            <ViewRides />
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!--ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" /-->
-    <!--h1>Available rides:</h1>
-    <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
-      <div id="showingFilters" v-if="filterOnVal">
-      <form @submit.prevent="updateRides"> 
-        <select v-model="fromLocation" name="fromAddress">
+      <!--ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" /-->
+      <!--h1>Available rides:</h1>
+      <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
+        <div id="showingFilters" v-if="filterOnVal">
+        <form @submit.prevent="updateRides"> 
+          <select v-model="fromLocation" name="fromAddress">
+            <option disabled value="">Select a location</option>
+            <option v-for="address in addresses" :value="address.id">
+            {{ address.city }}, {{ address.district }}
+            </option>
+          </select>
+          <select v-model="toLocation" name="toAddress">
           <option disabled value="">Select a location</option>
-          <option v-for="address in addresses" :value="address.id">
-          {{ address.city }}, {{ address.district }}
-          </option>
-        </select>
-        <select v-model="toLocation" name="toAddress">
-        <option disabled value="">Select a location</option>
-          <option v-for="address in addresses" :value="address.id">
-          {{ address.city }}, {{ address.district }}
-          </option>
-        </select>
-        <button>Update rides</button>
-        <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
-      </form>
-    </div-->
-    <!--ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" /-->
+            <option v-for="address in addresses" :value="address.id">
+            {{ address.city }}, {{ address.district }}
+            </option>
+          </select>
+          <button>Update rides</button>
+          <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
+        </form>
+      </div-->
+      <!--ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" /-->
+    </div>
+    <div v-else>
+      <h3>You are not logged in</h3>
+    </div>
   </main>
 </template>
