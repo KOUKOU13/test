@@ -10,7 +10,8 @@ export type Ride = {
     startTimestamp: number,
     description: string,
     isSmokingAllowed: boolean,
-    isPetTransportAllowed: boolean
+    isPetTransportAllowed: boolean,
+    generation: number
 }
 
 </script>

@@ -3,7 +3,9 @@
 export type UserRide = {
     id: number,
     rideId: number,
-    userId: number
+    userId: number,
+    passengerCount: number,
+    generation: number
 }
 
 </script>
