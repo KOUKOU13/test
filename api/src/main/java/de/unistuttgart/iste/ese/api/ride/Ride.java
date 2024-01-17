@@ -46,10 +46,13 @@ public class Ride {
     @NotNull
     private double price;
 
+    @NotNull
+    private int generation;
+
     // empty default constructor is necessary for JPA
     public Ride() {}
 
-    public Ride(long startId, long destId, long driverId, int passengerLimit, long startTimestamp, boolean isSmokingAllowed, boolean isPetTransportAllowed, String description, double price) {
+    public Ride(long startId, long destId, long driverId, int passengerLimit, long startTimestamp, boolean isSmokingAllowed, boolean isPetTransportAllowed, String description, double price, int generation) {
         this.startId = startId;
         this.destId = destId;
         this.driverId = driverId;
@@ -59,6 +62,7 @@ public class Ride {
         this.isPetTransportAllowed = isPetTransportAllowed;
         this.description = description;
         this.price = price;
+        this.generation = generation;
     }
 
     public long getId() {
@@ -139,5 +143,13 @@ public class Ride {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(int generation) {
+        this.generation = generation;
     }
 }

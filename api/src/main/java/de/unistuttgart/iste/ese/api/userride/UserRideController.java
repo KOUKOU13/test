@@ -64,7 +64,8 @@ public class UserRideController {
     @PostMapping("/userrides")
     @ResponseStatus(HttpStatus.CREATED)
     public UserRide createUserRides(@Valid @RequestBody UserRide requestBody) {
-        UserRide userRide = new UserRide(requestBody.getUserId(), requestBody.getRideId());
+        UserRide userRide = new UserRide(requestBody.getUserId(), requestBody.getRideId(),
+            requestBody.getPassengerCount(), requestBody.getPassengerCount());
         return userRideRepository.save(userRide);
     }
 

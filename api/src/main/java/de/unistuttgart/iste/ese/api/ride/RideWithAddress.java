@@ -45,12 +45,15 @@ public class RideWithAddress {
     @NotNull
     private double price;
 
+    @NotNull
+    private int generation;
+
     public RideWithAddress() {}
 
     public RideWithAddress(@NotNull String startCity, @NotNull String startPostCode, @NotNull String startDistrict,
             @NotNull String dstCity, @NotNull String dstPostCode, @NotNull String dstDistrict, @NotNull long driverId,
             @NotNull @Min(1) int passengerLimit, @NotNull long startTimestamp, @NotNull boolean isSmokingAllowed,
-            @NotNull boolean isPetTransportAllowed, @NotNull String description) {
+            @NotNull boolean isPetTransportAllowed, @NotNull String description, int generation) {
         this.startCity = startCity;
         this.startPostCode = startPostCode;
         this.startDistrict = startDistrict;
@@ -63,6 +66,7 @@ public class RideWithAddress {
         this.isSmokingAllowed = isSmokingAllowed;
         this.isPetTransportAllowed = isPetTransportAllowed;
         this.description = description;
+        this.generation = generation;
     }
 
     public String getStartCity() {
@@ -167,5 +171,13 @@ public class RideWithAddress {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(int generation) {
+        this.generation = generation;
     }
 }

@@ -22,11 +22,19 @@ public class UserRide {
     @NotNull
     private long rideId;
 
+    @NotNull
+    private int passengerCount;
+
+    @NotNull
+    private int generation;
+
     public UserRide() {}
 
-    public UserRide(@NotNull long userId, @NotNull long rideId) {
+    public UserRide(@NotNull long userId, @NotNull long rideId, int passengerCount, int generation) {
         this.userId = userId;
         this.rideId = rideId;
+        this.passengerCount = passengerCount;
+        this.generation = generation;
     }
 
     public long getId() {

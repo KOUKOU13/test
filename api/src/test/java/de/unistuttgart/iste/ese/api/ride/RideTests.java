@@ -42,7 +42,7 @@ public class RideTests {
             "Dolor sit amet",
             "12345");
         List<Ride> allRides = new ArrayList<Ride>();
-        allRides.add(new Ride(1, 2, driver.getId(), 2, System.currentTimeMillis() / 1000L, false, true, "Loop", 10.0d));
+        allRides.add(new Ride(1, 2, driver.getId(), 2, System.currentTimeMillis() / 1000L, false, true, "Loop", 10.0d, 0));
 
         // mocks the underneath call to JPA repository
         BDDMockito.given(rideRepository.findAll()).willReturn(allRides);
