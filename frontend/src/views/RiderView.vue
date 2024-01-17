@@ -64,25 +64,7 @@ watch(selectedSortOption, ()=>keyUpdate.value++)
           </select>
         </div>
         <div class="py-1.5"></div>
-        <div class="overflow-auto">
-          <table fixed-header='true' class="w-full">
-            <thead class="bg-dark-400">
-              <tr>
-                <th class="table-header">Start</th>
-                <th class="table-header">Destination</th>
-                <th class="table-header">Driver</th>
-                <th class="table-header">Passengers</th>
-                <th class="table-header">Date</th>
-                <th class="table-header">Price</th>
-                <th class="table-header"></th>
-                <th class="table-header"></th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-dark-400">
-              <ViewRides :key="keyUpdate" :sortOption="selectedSortOption" />
-            </tbody>
-          </table>
-        </div>
+        <ViewRides :key="keyUpdate" :sortOption="selectedSortOption" />
     </div>
   </main>
 </template>

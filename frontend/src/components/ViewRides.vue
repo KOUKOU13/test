@@ -213,52 +213,69 @@ fetch(`${config.apiBaseUrl}/users`)
 </script>
 
 <template>
-    <tr v-for="ride in rides" class="odd:bg-dark-100 even:bg-dark-200 hover:bg-dark-600 hover:text-dark-100">
-      <td class="text-center"> {{ getAddressStringFromId(ride.startId) }} </td>
-      <td class="text-center"> {{ getAddressStringFromId(ride.destId) }} </td>
-      <td class="text-center"> {{ getUserStringFromId(ride.driverId) }} </td>
-      <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
-      <td class="text-center"> {{ getDateFromUnixTimestamp(ride.startTimestamp) }} </td>
-      <td class="text-center"> {{ ride.price }}€ </td>
-      <td class="text-center">
-        <button class="button-no-bg text-center w-full"
-          @click="modalOpen=true; modalRide=ride;">
-          Additional Info
-        </button> </td>
-      <td class="text-center">
-        <div v-if="loggedIn">
-          <button v-if="!isUserRegisteredForRide(ride.id)"
-            @click="registerUserForRide(ride.id)"
-            class="button text-center w-full">
-            Apply
-          </button>
-          <button v-else
-            @click="deregisterUserFromRide(ride.id)"
-            class="button text-center w-full">
-            Deregister from ride
-          </button>
-        </div>
-        <div v-else>
-          <button class="button text-center w-full">
-            Log in to apply!
-          </button>
-        </div>
-      </td>
-    </tr>
-    
-    <teleport to="body">
-        <div class="modal" v-if="modalOpen">
-            <div>
-              <h1 class="font-bold w-full text-center">Description</h1>
-              {{ modalRide?.description }}
-              {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
-              <button class="button text-center w-full"
-                @click="modalOpen=false;">
-                close
+  <div class="overflow-auto">
+    <table fixed-header='true' class="w-full">
+      <thead class="bg-dark-400">
+        <tr>
+          <th class="table-header">Start</th>
+          <th class="table-header">Destination</th>
+          <th class="table-header">Driver</th>
+          <th class="table-header">Passengers</th>
+          <th class="table-header">Date</th>
+          <th class="table-header">Price</th>
+          <th class="table-header"></th>
+          <th class="table-header"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-dark-400">
+        <tr v-for="ride in rides" class="odd:bg-dark-100 even:bg-dark-200 hover:bg-dark-600 hover:text-dark-100">
+          <td class="text-center"> {{ getAddressStringFromId(ride.startId) }} </td>
+          <td class="text-center"> {{ getAddressStringFromId(ride.destId) }} </td>
+          <td class="text-center"> {{ getUserStringFromId(ride.driverId) }} </td>
+          <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
+          <td class="text-center"> {{ getDateFromUnixTimestamp(ride.startTimestamp) }} </td>
+          <td class="text-center"> {{ ride.price }}€ </td>
+          <td class="text-center">
+            <button class="button-no-bg text-center w-full"
+              @click="modalOpen=true; modalRide=ride;">
+              Additional Info
+            </button> </td>
+          <td class="text-center">
+            <div v-if="loggedIn">
+              <button v-if="!isUserRegisteredForRide(ride.id)"
+                @click="registerUserForRide(ride.id)"
+                class="button text-center w-full">
+                Apply
+              </button>
+              <button v-else
+                @click="deregisterUserFromRide(ride.id)"
+                class="button text-center w-full">
+                Deregister from ride
               </button>
             </div>
-        </div>
-    </teleport>
+            <div v-else>
+              <button class="button text-center w-full">
+                Log in to apply!
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <teleport to="body">
+      <div class="modal" v-if="modalOpen">
+          <div>
+            <h1 class="font-bold w-full text-center">Description</h1>
+            {{ modalRide?.description }}
+            {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
+            <button class="button text-center w-full"
+              @click="modalOpen=false;">
+              close
+            </button>
+          </div>
+      </div>
+  </teleport>
 </template>
 
 <style>
