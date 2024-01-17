@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {Button} from "agnostic-vue";
 import ViewRides from "../components/ViewRides.vue";
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import config from "@/config";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 let name = "";
 let loggedIn = localStorage.getItem("userID") ? true : false
@@ -17,6 +18,7 @@ const keyUpdate = ref(0)
 
 
 const addresses = ref([])
+const selectedSortOption = ref('none')
 
 fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
 
@@ -25,6 +27,10 @@ fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>address
 function submit() {
 //   showToast(new Toast("!", `Hello ${name}! Nice to meet you!`));
 }
+
+watch(selectedSortOption, ()=>keyUpdate.value++)
+
+
 </script>
 
 <template>
@@ -44,6 +50,19 @@ function submit() {
           </div>
         </div>
         <div class="py-1.5"></div>
+        <div id="sortSection">
+          <label><FontAwesomeIcon icon="sort" /> Sort by: </label>
+          <select v-model="selectedSortOption">
+            <option value="none">None</option>
+            <option value="price_asc">Price (Low -> High)</option>
+            <option value="price_dec">Price (High -> Low)</option>
+            <option value="date_asc">Date (Oldest -> Latest)</option>
+            <option value="date_dec">Date (Latest -> Oldest)</option>
+            <option value="passengers_asc">Passenger Limit (Low -> High)</option>
+            <option value="passengers_dec">Passenger Limit (High -> Low)</option>
+          </select>
+        </div>
+        <div class="py-1.5"></div>
         <div class="overflow-auto">
           <table fixed-header='true' class="w-full">
             <thead class="bg-dark-400">
@@ -59,7 +78,7 @@ function submit() {
               </tr>
             </thead>
             <tbody class="divide-y divide-dark-400">
-              <ViewRides />
+              <ViewRides :key="keyUpdate" :sortOption="selectedSortOption" />
             </tbody>
           </table>
         </div>

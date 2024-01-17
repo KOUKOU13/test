@@ -30,9 +30,13 @@ const props = defineProps({
     type: Date,
     required: false
   },
+  sortOption: {
+    type: String,
+    required: true
+  }
 })
 
-const { filterOn, from_location, to_location, date, showRidesUserRegisteredFor } = toRefs(props)
+const { filterOn, from_location, to_location, date, showRidesUserRegisteredFor, sortOption } = toRefs(props)
 
 console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
@@ -44,6 +48,7 @@ const modalOpen = ref<boolean>()
 const modalRide = ref<Ride>()
 
 function filterRides(ridesArray: Ride[]) {
+  return ridesArray
   if (filterOn.value) {
     console.log("RUNNING FILTER")
     console.log(from_location)
@@ -60,6 +65,36 @@ function filterRides(ridesArray: Ride[]) {
   }
   else {
     return ridesArray
+  }
+}
+
+function sortRides(ridesArray: Ride[]) {
+  console.log("in sort func")
+  console.log(sortOption.value)
+  // values of sortOption: [none, price_asc, price_dec, date_asc, date_dec, passengers_asc, passengers_dec] 
+  let sortedArray = [...ridesArray]
+  for (const ride of sortedArray) {
+    console.log(ride)
+  }
+  console.log("DONE")
+  // return ridesArray
+  switch (sortOption.value) {
+    case 'none':
+      return sortedArray
+    case 'price_asc':
+      return sortedArray.sort((a,b) => a.price - b.price)
+    case 'price_dec':
+      return sortedArray.sort((a,b) => b.price - a.price)
+    case 'date_asc':
+      return sortedArray.sort((a,b) => a.startTimestamp - b.startTimestamp)
+    case 'date_dec':
+      return sortedArray.sort((a,b) => b.startTimestamp - a.startTimestamp)
+    case 'passengers_asc':
+      return sortedArray.sort((a,b) => a.passengerLimit - b.passengerLimit)
+    case 'passengers_dec':
+      return sortedArray.sort((a,b) => b.passengerLimit - a.passengerLimit)
+    default:
+      return sortedArray
   }
 }
 
@@ -143,6 +178,7 @@ function getDateFromUnixTimestamp(timestamp : number) {
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
       .then(data=>rides.value=filterRides(data))
+      .then(filteredRides=>rides.value=sortRides(filteredRides))
       .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
@@ -172,7 +208,7 @@ fetch(`${config.apiBaseUrl}/users`)
       .then(data=>console.log("Users: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching users: " + err))
 
-  const filteredByRegisteredRides = computed(()=>rides.value.filter(ride => showRidesUserRegisteredFor.value == isUserRegisteredForRide(ride.id)))
+  // const filteredByRegisteredRides = computed(()=>rides.value.filter(ride => showRidesUserRegisteredFor.value == isUserRegisteredForRide(ride.id)))
 
 </script>
 
