@@ -16,7 +16,7 @@ const props = defineProps({
   },
   showRidesUserRegisteredFor: {
     type: Boolean,
-    required: true
+    required: false
   },
   from_location: {
     type: String,
@@ -237,4 +237,9 @@ fetch(`${config.apiBaseUrl}/users`)
 .modal > div {
   @apply bg-dark-200 p-4 border-2 rounded-3xl w-[720px] h-[480px];
 }
+
+.text-center {
+  color: white;
+}
+
 </style>

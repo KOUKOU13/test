@@ -139,8 +139,43 @@ function debugFillRides() {
         .then(res=>res.json())
         .then(data=>users.value=data)
         .then(()=>console.log("Fetched users."))
+        .then(()=>{
+          debuggerFillRidesHelper(addresses)
+        })
         .catch(err=>console.log("Error fetching users: " + err))
 
+  // for (let i = 0; i < 50; i++) {
+  //   let start = addresses[Math.floor(Math.random() * addresses.length)]
+  //   let dst = addresses[Math.floor(Math.random() * addresses.length)]
+  //   let user = users.value[Math.floor(Math.random() * users.value.length)]
+  //   fetch(`${config.apiBaseUrl}/rides/new`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({
+  //       startCity: start.city,
+  //       startPostCode: start.postcode,
+  //       startDistrict: start.district,
+  //       dstCity: dst.city,
+  //       dstPostCode: dst.postcode,
+  //       dstDistrict: dst.district,
+  //       driverId: user.id,
+  //       passengerLimit: Math.floor(Math.random() * 4),
+  //       startTimestamp: +new Date(Math.floor(Date.now() / 1000 + Math.random() * 1000000)), // gives unix timestamp of date and time
+  //       description: "Lorem ipsum dolor sit amet",
+  //       smokingAllowed: Math.random() < 0.5 ? false : true,
+  //       petTransportAllowed: Math.random() < 0.5 ? false : true,
+  //       price: Math.round((Math.random() * 20.0 + 3.5) * 100.0) / 100.0,
+  //      })
+  //     })
+  //     .then(res=>console.log(res))
+  //     .catch(err=>console.log("DEBUG CREATE RIDE ERROR: " + err))
+  // }
+
+  console.log("Generated random rides.")
+}
+
+// here to fix async issue
+function debuggerFillRidesHelper(addresses: Array<Object>) {
   for (let i = 0; i < 50; i++) {
     let start = addresses[Math.floor(Math.random() * addresses.length)]
     let dst = addresses[Math.floor(Math.random() * addresses.length)]
@@ -167,8 +202,6 @@ function debugFillRides() {
       .then(res=>console.log(res))
       .catch(err=>console.log("DEBUG CREATE RIDE ERROR: " + err))
   }
-
-  console.log("Generated random rides.")
 }
 
 </script>
