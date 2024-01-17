@@ -2,6 +2,8 @@
 
 import { ref, toRefs, reactive, computed } from 'vue'
 import config from "@/config";
+import EditRide from './EditRide.vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import type { Ride } from "../interface/Ride.vue"
 import type { UserRide } from "../interface/UserRide.vue"
@@ -26,7 +28,8 @@ const addresses = ref([])
 const users = ref([])
 const modalOpen = ref<boolean>()
 const modalRide = ref<Ride>()
-const selectedTab = ref("upcoming")
+const editModalShowing = ref<boolean>()
+const editModalRide = ref<Ride>()
 
 function filterRides(ridesArray: Ride[]) {
   const currentTimestamp = Math.floor((+ new Date())/1000)
@@ -108,6 +111,13 @@ function getDateFromUnixTimestamp(timestamp : number) {
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
       .then(data=>rides.value=filterRides(data))
+      .then(data=>{
+        console.log("hereeeee")
+        if (rides.value.length > 1) {
+          console.log(rides.value[0].smokingAllowed)
+        }
+        
+      })
       .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
@@ -153,6 +163,8 @@ fetch(`${config.apiBaseUrl}/users`)
           <th class="table-header">Price</th>
           <th class="table-header"></th>
           <th class="table-header"></th>
+          <th class="table-header"></th>
+          <th class="table-header"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-dark-400">
@@ -163,25 +175,51 @@ fetch(`${config.apiBaseUrl}/users`)
           <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
           <td class="text-center"> {{ getDateFromUnixTimestamp(ride.startTimestamp) }} </td>
           <td class="text-center"> {{ ride.price }}€ </td>
+
+          <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.smokingAllowed, 'iconDisabled': !ride.smokingAllowed}" icon="smoking" /></td>
+          <td class="text-center"><FontAwesomeIcon icon="dog" /></td>
+
           <td class="text-center">
             <button class="button-no-bg text-center w-full"
               @click="modalOpen=true; modalRide=ride;">
               Additional Info
             </button> </td>
           <td class="text-center">
+            <button class="button text-center w-full" @click="editModalShowing=true; editModalRide=ride;">
+                Edit
+              </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <teleport to="body">
-      <div class="modal" v-if="modalOpen">
-          <div>
+      <div class="modal" v-if="modalOpen" @click="modalOpen=false">
+          <div @click.stop="">
             <h1 class="font-bold w-full text-center">Description</h1>
             {{ modalRide?.description }}
-            {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
+            {{ modalRide?.smokingAllowed ? "foo" : "bar" }}
             <button class="button text-center w-full"
               @click="modalOpen=false;">
+              close
+            </button>
+          </div>
+      </div>
+  </teleport>
+
+  <teleport to="body">
+      <div class="modal" v-if="editModalShowing" @click="editModalShowing=false">
+          <div @click.stop="">
+            <EditRide :rideId="editModalRide!.id" @closeModal="editModalShowing=false" />
+            <!-- <h1 class="font-bold w-full text-center">Edit Ride</h1>
+            <label>Description: <input type="text"></label>
+            <br>
+            <label>more field, need to figure out how to v-model data <input type="text"></label>
+            <h1 class="font-bold w-full">{{ modalRide?.description }}</h1>
+            <h1 class="font-bold w-full text-center">{{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}</h1>
+             -->
+            <button class="button text-center w-full"
+              @click="editModalShowing=false;">
               close
             </button>
           </div>
@@ -204,6 +242,14 @@ fetch(`${config.apiBaseUrl}/users`)
 
 .text-center {
   color: white;
+}
+
+.iconEnabled {
+  color: white;
+}
+
+.iconDisabled {
+  color: rgb(69, 69, 69);
 }
 
 </style>

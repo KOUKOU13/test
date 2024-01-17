@@ -264,8 +264,8 @@ fetch(`${config.apiBaseUrl}/users`)
     </table>
   </div>
   <teleport to="body">
-      <div class="modal" v-if="modalOpen">
-          <div>
+      <div class="modal" v-if="modalOpen" @click="modalOpen=false">
+          <div @click.stop="">
             <h1 class="font-bold w-full text-center">Description</h1>
             {{ modalRide?.description }}
             {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
