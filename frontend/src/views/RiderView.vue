@@ -20,9 +20,11 @@ const keyUpdate = ref(0)
 const addresses = ref([])
 const selectedSortOption = ref('none')
 
-fetch(`${config.apiBaseUrl}/addresses`).then(res=>res.json()).then(data=>addresses.value=data).then(data=>console.log(addresses.value)).catch(err=>console.log(err))
-
-
+fetch(`${config.apiBaseUrl}/addresses`)
+  .then(res=>res.json())
+  .then(data=>addresses.value=data)
+  .then(data=>console.log(addresses.value))
+  .catch(err=>console.log(err))
 
 function submit() {
 //   showToast(new Toast("!", `Hello ${name}! Nice to meet you!`));
@@ -81,29 +83,6 @@ watch(selectedSortOption, ()=>keyUpdate.value++)
             </tbody>
           </table>
         </div>
-
-      <!--ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" /-->
-      <!--h1>Available rides:</h1>
-      <label>Filter rides<input type="checkbox" v-model="filterOnVal"></label>
-        <div id="showingFilters" v-if="filterOnVal">
-        <form @submit.prevent="updateRides"> 
-          <select v-model="fromLocation" name="fromAddress">
-            <option disabled value="">Select a location</option>
-            <option v-for="address in addresses" :value="address.id">
-            {{ address.city }}, {{ address.district }}
-            </option>
-          </select>
-          <select v-model="toLocation" name="toAddress">
-          <option disabled value="">Select a location</option>
-            <option v-for="address in addresses" :value="address.id">
-            {{ address.city }}, {{ address.district }}
-            </option>
-          </select>
-          <button>Update rides</button>
-          <AvailableRidesList :key="keyUpdate" :from_location="fromLocation" :to_location="toLocation" date="2023/03/03" />
-        </form>
-      </div-->
-      <!--ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" /-->
     </div>
   </main>
 </template>
