@@ -10,35 +10,15 @@ const userId = localStorage.getItem("userID")
 let loggedIn = localStorage.getItem("userID") ? true : false
 
 const props = defineProps({
-  filterOn: {
-    type: Boolean,
-    required: false
-  },
-  showRidesUserRegisteredFor: {
-    type: Boolean,
-    required: false
-  },
-  from_location: {
-    type: String,
-    required: false
-  },
-  to_location: {
-    type: String,
-    required: false
-  },
-  date: {
-    type: Date,
-    required: false
-  },
-  sortOption: {
+  ridesShown: {
     type: String,
     required: true
-  }
+  },
 })
 
-const { filterOn, from_location, to_location, date, showRidesUserRegisteredFor, sortOption } = toRefs(props)
+const { ridesShown } = toRefs(props)
 
-console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
+// console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref<Ride[]>([])
 const userrides = ref<UserRide[]>([])
@@ -46,9 +26,20 @@ const addresses = ref([])
 const users = ref([])
 const modalOpen = ref<boolean>()
 const modalRide = ref<Ride>()
+const selectedTab = ref("upcoming")
 
 function filterRides(ridesArray: Ride[]) {
-  return ridesArray
+  const currentTimestamp = Math.floor((+ new Date())/1000)
+  if (ridesShown.value == "upcoming") {
+    return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp >= currentTimestamp))
+  } 
+  else if (ridesShown.value == "past") {
+    return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp < currentTimestamp))
+  }
+  else {
+    return ridesArray
+  }
+  
   // if (filterOn.value) {
   //   console.log("RUNNING FILTER")
   //   console.log(from_location)
@@ -66,67 +57,6 @@ function filterRides(ridesArray: Ride[]) {
   // else {
   //   return ridesArray
   // }
-}
-
-function sortRides(ridesArray: Ride[]) {
-  console.log("in sort func")
-  console.log(sortOption.value)
-  // values of sortOption: [none, price_asc, price_dec, date_asc, date_dec, passengers_asc, passengers_dec] 
-  let sortedArray = [...ridesArray]
-  for (const ride of sortedArray) {
-    console.log(ride)
-  }
-  console.log("DONE")
-  // return ridesArray
-  switch (sortOption.value) {
-    case 'none':
-      return sortedArray
-    case 'price_asc':
-      return sortedArray.sort((a,b) => a.price - b.price)
-    case 'price_dec':
-      return sortedArray.sort((a,b) => b.price - a.price)
-    case 'date_asc':
-      return sortedArray.sort((a,b) => a.startTimestamp - b.startTimestamp)
-    case 'date_dec':
-      return sortedArray.sort((a,b) => b.startTimestamp - a.startTimestamp)
-    case 'passengers_asc':
-      return sortedArray.sort((a,b) => a.passengerLimit - b.passengerLimit)
-    case 'passengers_dec':
-      return sortedArray.sort((a,b) => b.passengerLimit - a.passengerLimit)
-    default:
-      return sortedArray
-  }
-}
-
-function registerUserForRide(rideId : number) {
-  console.log(`register for ${rideId}`)
-  fetch(`${config.apiBaseUrl}/userrides`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: userId,
-      rideId: rideId,
-     })
-    }).then(res=>console.log(`${res} printin`))
-}
-
-function deregisterUserFromRide(rideId : number) {
-  console.log(`deregister for ${rideId}`)
-
-  for (let entry of userrides.value) {
-    if (entry.rideId == rideId) {
-      if (entry.userId == userId) {
-        console.log(`ID to delete: ${entry.id}`)
-        fetch(`${config.apiBaseUrl}/userrides/${entry.id}`, { method: 'DELETE' })
-          .then(res=>{
-            console.log(res)
-            return res.json()
-          })
-          .then(data=>console.log(data))
-          // .then(res=>location.reload())
-      }
-    }
-  }
 }
 
 function getUserCountForRide(rideId : number) {
@@ -178,7 +108,6 @@ function getDateFromUnixTimestamp(timestamp : number) {
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
       .then(data=>rides.value=filterRides(data))
-      .then(filteredRides=>rides.value=sortRides(filteredRides))
       .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
@@ -208,11 +137,10 @@ fetch(`${config.apiBaseUrl}/users`)
       .then(data=>console.log("Users: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching users: " + err))
 
-  // const filteredByRegisteredRides = computed(()=>rides.value.filter(ride => showRidesUserRegisteredFor.value == isUserRegisteredForRide(ride.id)))
-
 </script>
 
 <template>
+
   <div class="overflow-auto">
     <table fixed-header='true' class="w-full">
       <thead class="bg-dark-400">
@@ -241,23 +169,6 @@ fetch(`${config.apiBaseUrl}/users`)
               Additional Info
             </button> </td>
           <td class="text-center">
-            <div v-if="loggedIn">
-              <button v-if="!isUserRegisteredForRide(ride.id)"
-                @click="registerUserForRide(ride.id)"
-                class="button text-center w-full">
-                Apply
-              </button>
-              <button v-else
-                @click="deregisterUserFromRide(ride.id)"
-                class="button text-center w-full">
-                Deregister from ride
-              </button>
-            </div>
-            <div v-else>
-              <button class="button text-center w-full">
-                Log in to apply!
-              </button>
-            </div>
           </td>
         </tr>
       </tbody>

@@ -28,12 +28,11 @@ function logoutFunc() {
             <RouterLink to="/">Home</RouterLink>
           </HeaderNavItem>
           <HeaderNavItem>
-            <RouterLink to="/rider">Rider</RouterLink>
+            <RouterLink to="/rider">Rides</RouterLink>
           </HeaderNavItem>
           <HeaderNavItem>
-            <RouterLink to="/driver">Driver</RouterLink>
+            <RouterLink to="/driver">Ride Management</RouterLink>
           </HeaderNavItem>
-          
           
           <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>

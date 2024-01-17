@@ -59,7 +59,7 @@ function addRide() {
       dstDistrict: toLocationDistrict.value,
       driverId: userId,
       passengerLimit: numberOfPassengers.value,
-      startTimestamp: +new Date(dateVal.value), // gives unix timestamp of date and time
+      startTimestamp: Math.floor((+new Date(dateVal.value))/1000), // gives unix timestamp of date and time
       description: description.value,
       smokingAllowed: smokingAllowed.value,
       petTransportAllowed: animalsAllowed.value,
