@@ -33,16 +33,8 @@ function logoutFunc() {
           <HeaderNavItem>
             <RouterLink to="/driver">Driver</RouterLink>
           </HeaderNavItem>
-          <HeaderNavItem>
-            <RouterLink to="/registration">Register</RouterLink>
-          </HeaderNavItem>
-          <HeaderNavItem v-if="!loggedIn">
-            <RouterLink to="/login">Login</RouterLink>
-          </HeaderNavItem>
-          <HeaderNavItem v-if="loggedIn">
-            <!-- <RouterLink to="/login">Logout</RouterLink> -->
-            <h4 to="/" @click="logoutFunc">Logout</h4>
-          </HeaderNavItem>
+          
+          
           <HeaderNavItem>
             <RouterLink to="/about">About</RouterLink>
           </HeaderNavItem>
@@ -55,6 +47,16 @@ function logoutFunc() {
           </HeaderNavItem>
           <HeaderNavItem>
             <RouterLink to="/rideView">Edit ride</RouterLink>
+          </HeaderNavItem>
+          <HeaderNavItem v-if="!loggedIn">
+            <RouterLink to="/registration">Register</RouterLink>
+          </HeaderNavItem>
+          <HeaderNavItem v-if="!loggedIn">
+            <RouterLink to="/login">Login</RouterLink>
+          </HeaderNavItem>
+          <HeaderNavItem v-if="loggedIn">
+            <!-- <RouterLink to="/login">Logout</RouterLink> -->
+            <h4 to="/" @click="logoutFunc">Logout</h4>
           </HeaderNavItem>
           <HeaderNavItem>
             <RouterLink to="/profile" v-if="loggedIn" style="position: absolute;right: 0; padding-right: 3em;">Welcome {{ userFirstName }}. Click to edit profile.</RouterLink>
