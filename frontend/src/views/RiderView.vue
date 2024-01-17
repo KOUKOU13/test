@@ -35,7 +35,6 @@ watch(selectedSortOption, ()=>keyUpdate.value++)
 
 <template>
   <main>
-    <div v-if="loggedIn">
       <div class="mx-[10rem]">
         <h1 class="bg-primary-200 text-dark-100 mt-3 py-2 font-black w-full text-center text-3xl subpixel-antialiased rounded-t-3xl">
           Search for a ride
@@ -82,7 +81,6 @@ watch(selectedSortOption, ()=>keyUpdate.value++)
             </tbody>
           </table>
         </div>
-      </div>
 
       <!--ViewRides :showRidesUserRegisteredFor="showRidesRegisteredFor" /-->
       <!--h1>Available rides:</h1>
@@ -106,9 +104,6 @@ watch(selectedSortOption, ()=>keyUpdate.value++)
         </form>
       </div-->
       <!--ViewRides :showRidesUserRegisteredFor="!showRidesRegisteredFor" :filterOn="filterOnVal" :key="filterOnVal" :from_location="fromLocation" :to_location="toLocation" /-->
-    </div>
-    <div v-else>
-      <h3>You are not logged in</h3>
     </div>
   </main>
 </template>
