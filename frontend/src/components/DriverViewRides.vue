@@ -29,7 +29,8 @@ const emit = defineEmits(["updateRides"])
 // console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref<Ride[]>([])
-const userrides = ref<UserRide[]>([])
+// const userrides = ref<UserRide[]>([])
+const userapplications = ref<UserRide[]>([])
 const addresses = ref([])
 const users = ref([])
 const modalOpen = ref<boolean>()
@@ -37,7 +38,7 @@ const modalRide = ref<Ride>()
 const editModalShowing = ref<boolean>()
 const editModalRide = ref<Ride>()
 // when rides is fetched increment, same with userrides, once this variable==2, we can filter rides
-const ridesAndUserridesFetchedIncrement = ref(0)
+const ridesAndApplicationsFetchedIncrement = ref(0)
 
 function filterRides(ridesArray: Ride[]) {
   console.log("FILTERING")
@@ -53,43 +54,40 @@ function filterRides(ridesArray: Ride[]) {
       return ridesArray
     }
   }
+  // rider
   else {
-    // check all userrides
-    console.log("checking userrides")
-    console.log(userrides.value)
-    for (let userRi of userrides.value) {
-      console.log(userRi)
+    if (ridesShown.value == "upcoming") {
+      return ridesArray.filter((ride: Ride)=>{
+        for (const application of userapplications.value) {
+          if (application.rideId == ride.id && ride.startTimestamp >= currentTimestamp) {
+            return true
+          }
+        }
+      })
     }
-    // if (ridesShown.value == "upcoming") {
-    //   // userrides stuff to figure out but also need test data for that
-    //   return ridesArray.filter((ride: Ride)=>((userrides.userId==userId) && ride.startTimestamp >= currentTimestamp))
-    // }
-    // else if (ridesShown.value == "past") {
-    //   return ridesArray.filter((ride: Ride)=>(ride.driverId!=parseInt(userId!) && ride.startTimestamp < currentTimestamp))
-    // }
-    // else {
-    //   return ridesArray
+    else if (ridesShown.value == "past") {
+      return ridesArray.filter((ride: Ride)=>{
+        for (const application of userapplications.value) {
+          if (application.rideId == ride.id && ride.startTimestamp < currentTimestamp) {
+            return true
+          }
+        }
+      })
+    }
+    else if (ridesShown.value == "past") {
+      return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp < currentTimestamp))
+    }
+    else {
+      return []
+    }
+    // check all userapplications
+    // console.log("checking userapplications")
+    // console.log(userapplications.value)
+    // for (let userRi of userapplications.value) {
+    //   console.log(userRi)
     // }
   }
   
-  
-  // if (filterOn.value) {
-  //   console.log("RUNNING FILTER")
-  //   console.log(from_location)
-  //   var filteredRides = []
-  //   for (let ride of ridesArray) {
-  //     console.log("Printing ride")
-  //     console.log(ride)
-  //     if (ride.startId == from_location.value && ride.destId == to_location.value) {
-  //       filteredRides.push(ride)
-  //     }
-  //   }
-  //   console.log(filteredRides)
-  //   return filteredRides
-  // }
-  // else {
-  //   return ridesArray
-  // }
 }
 
 function deleteRide(rideId: number) {
@@ -109,7 +107,7 @@ function deleteRide(rideId: number) {
 
 function getUserCountForRide(rideId : number) {
   let count = 0
-  for (let entry of userrides.value) {
+  for (let entry of userapplications.value) {
     if (entry.rideId == rideId) {
       count++
     }
@@ -157,23 +155,22 @@ fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
       .then(data=>{
         rides.value=data
-        ridesAndUserridesFetchedIncrement.value++
+        ridesAndApplicationsFetchedIncrement.value++
         return rides.value
       })
       // .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
-fetch(`${config.apiBaseUrl}/userrides`)
+fetch(`${config.apiBaseUrl}/userapplications`)
       .then((res) => {
-        console.log("userrides thing res")
         console.log(res)
         return res.json()
       })
       .then((data) => {
         console.log("usserrides data thing")
         console.log(data)
-        userrides.value = data
-        ridesAndUserridesFetchedIncrement.value++
+        userapplications.value = data
+        ridesAndApplicationsFetchedIncrement.value++
         return data
       })
       .catch(err=>console.log(err))
@@ -206,10 +203,10 @@ fetch(`${config.apiBaseUrl}/users`)
 //     ridesAndUserridesFetched.value = true
 //   }
 // })
-watch(ridesAndUserridesFetchedIncrement, () => {
-  if (ridesAndUserridesFetchedIncrement.value == 2) {
+watch(ridesAndApplicationsFetchedIncrement, () => {
+  if (ridesAndApplicationsFetchedIncrement.value == 2) {
     console.log("READY TO FILTER")
-    console.log(ridesAndUserridesFetchedIncrement.value)
+    console.log(ridesAndApplicationsFetchedIncrement.value)
     rides.value = filterRides(rides.value)
   }
 })
