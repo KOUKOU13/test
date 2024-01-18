@@ -9,7 +9,7 @@ export type Ride = {
     price: number,
     startTimestamp: number,
     description: string,
-    smokingAllowed: boolean,
+    isSmokingAllowed: boolean,
     petTransportAllowed: boolean,
     generation: number
 }

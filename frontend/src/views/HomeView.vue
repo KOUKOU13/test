@@ -193,7 +193,7 @@ function debuggerFillRidesHelper(addresses: Array<Object>) {
         driverId: user.id,
         passengerLimit: Math.floor(Math.random() * 4),
         startTimestamp: +new Date(Math.floor(Date.now() / 1000 + Math.random() * 1000000)), // gives unix timestamp of date and time
-        description: "Lorem ipsum dolor sit amet",
+        description: "Lorem ipsum dolor sit amet: " + i,
         smokingAllowed: Math.random() < 0.5 ? false : true,
         petTransportAllowed: Math.random() < 0.5 ? false : true,
         price: Math.round((Math.random() * 20.0 + 3.5) * 100.0) / 100.0,
