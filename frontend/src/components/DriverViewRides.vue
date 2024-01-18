@@ -135,16 +135,16 @@ function getUserStringFromId(userId : number) {
   return "Unknown"
 }
 
-// function isUserRegisteredForRide(rideId : number) {
-//   for (let entry of userrides.value) {
-//     if (entry.rideId == rideId) {
-//       if (entry.userId == userId) {
-//         return true
-//       }
-//     }
-//   }
-//   return false
-// }
+function isUserRegisteredForRide(rideId : number) {
+  for (let entry of userapplications.value) {
+    if (entry.rideId == rideId) {
+      if (entry.userId == parseInt(userId!)) {
+        return true
+      }
+    }
+  }
+  return false
+}
 
 function getDateFromUnixTimestamp(timestamp : number) {
   var date = new Date(timestamp * 1000)
@@ -187,22 +187,6 @@ fetch(`${config.apiBaseUrl}/users`)
       // .then(data=>console.log("Users: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching users: " + err))
 
-
-// to only filter todos once rides and userrides are fetched since depends on both 
-// watch(rides, ()=>{
-//   console.log("RIDE CHANGE")
-//   // console.log(rides.value)
-//   if (userrides.value.length > 0) {
-//     ridesAndUserridesFetched.value = true
-//   }
-// })
-// watch(userrides, ()=>{
-//   console.log("USER CHANGE")
-//   console.log(rides.value)
-//   if (rides.value.length > 0) {
-//     ridesAndUserridesFetched.value = true
-//   }
-// })
 watch(ridesAndApplicationsFetchedIncrement, () => {
   if (ridesAndApplicationsFetchedIncrement.value == 2) {
     console.log("READY TO FILTER")
