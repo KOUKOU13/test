@@ -1,13 +1,27 @@
 <script setup lang="ts">
 
-import { ref, toRefs, reactive, computed } from 'vue'
+import { ref, watch, toRef, toRefs, markRaw, reactive, computed, shallowReactive, shallowRef } from 'vue'
 import config from "@/config";
+import ModalLogin from "../components/ModalLogin.vue"
+import { activateModal } from "../ts/modal"
 
 import type { Ride } from "../interface/Ride.vue"
 import type { UserRide } from "../interface/UserRide.vue"
+import ModalAdditionalRideInfo from './ModalAdditionalRideInfo.vue';
 
 const userId = localStorage.getItem("userID")
 let loggedIn = localStorage.getItem("userID") ? true : false
+
+const modalAdditionalInfo = activateModal();
+
+const updateModalRideInfoKey = ref(0)
+let modalAdditionalInfoRideId = ref(0)
+watch(modalAdditionalInfoRideId, () => updateModalRideInfoKey.value++)
+
+const openAdditionalInfo = (rideId: number) => {
+  modalAdditionalInfoRideId.value = rideId
+  modalAdditionalInfo.activateModal();
+};
 
 const props = defineProps({
   filterOn: {
@@ -45,7 +59,6 @@ const userrides = ref<UserRide[]>([])
 const addresses = ref([])
 const users = ref([])
 const modalOpen = ref<boolean>()
-const modalRide = ref<Ride>()
 
 function filterRides(ridesArray: Ride[]) {
   return ridesArray
@@ -237,7 +250,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <td class="text-center"> {{ ride.price }}€ </td>
           <td class="text-center">
             <button class="button-no-bg text-center w-full"
-              @click="modalOpen=true; modalRide=ride;">
+              @click="openAdditionalInfo(ride.id)">
               Additional Info
             </button> </td>
           <td class="text-center">
@@ -264,35 +277,10 @@ fetch(`${config.apiBaseUrl}/users`)
     </table>
   </div>
   <teleport to="body">
-      <div class="modal" v-if="modalOpen" @click="modalOpen=false">
-          <div @click.stop="">
-            <h1 class="font-bold w-full text-center">Description</h1>
-            {{ modalRide?.description }}
-            {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
-            <button class="button text-center w-full"
-              @click="modalOpen=false;">
-              close
-            </button>
-          </div>
-      </div>
+    <ModalAdditionalRideInfo :key="updateModalRideInfoKey" :rideId="modalAdditionalInfoRideId" v-if="modalAdditionalInfo.active.value == true" @close="() => modalAdditionalInfo.deactivateModal()"/>
   </teleport>
 </template>
 
 <style>
-.root {
-  @apply relative;
-}
-
-.modal {
-  @apply fixed top-0 left-0 bg-black-alpha-900 w-screen h-screen flex justify-center align-middle items-center backdrop-blur-sm;
-}
-
-.modal > div {
-  @apply bg-dark-200 p-4 border-2 rounded-3xl w-[720px] h-[480px];
-}
-
-.text-center {
-  color: white;
-}
 
 </style>
