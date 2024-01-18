@@ -2,6 +2,7 @@
 
 import { ref, toRefs, reactive, computed } from 'vue'
 import config from "@/config";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import type { Ride } from "../interface/Ride.vue"
 import type { UserRide } from "../interface/UserRide.vue"
@@ -225,6 +226,8 @@ fetch(`${config.apiBaseUrl}/users`)
           <th class="table-header">Price</th>
           <th class="table-header"></th>
           <th class="table-header"></th>
+          <th class="table-header"></th>
+          <th class="table-header"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-dark-400">
@@ -235,6 +238,8 @@ fetch(`${config.apiBaseUrl}/users`)
           <td class="text-center"> {{ getUserCountForRide(ride.id) }} / {{ ride.passengerLimit }} </td>
           <td class="text-center"> {{ getDateFromUnixTimestamp(ride.startTimestamp) }} </td>
           <td class="text-center"> {{ ride.price }}€ </td>
+          <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.smokingAllowed, 'iconDisabled': !ride.smokingAllowed}" icon="smoking" /></td>
+          <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.petTransportAllowed, 'iconDisabled': !ride.petTransportAllowed}" icon="dog" /></td>
           <td class="text-center">
             <button class="button-no-bg text-center w-full"
               @click="modalOpen=true; modalRide=ride;">
@@ -268,7 +273,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <div @click.stop="">
             <h1 class="font-bold w-full text-center">Description</h1>
             {{ modalRide?.description }}
-            {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }}
+            <!-- {{ modalRide?.isSmokingAllowed ? "foo" : "bar" }} -->
             <button class="button text-center w-full"
               @click="modalOpen=false;">
               close
@@ -293,6 +298,14 @@ fetch(`${config.apiBaseUrl}/users`)
 
 .text-center {
   color: white;
+}
+
+.iconEnabled {
+  color: white;
+}
+
+.iconDisabled {
+  color: rgb(69, 69, 69);
 }
 
 </style>

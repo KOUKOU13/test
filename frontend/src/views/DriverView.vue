@@ -35,6 +35,6 @@ const userId = localStorage.getItem("userID")
         <div v-else>
             <h3>You are not logged in</h3>
         </div>
-        <DriverViewRides :key="updateViewRidesKey" :ridesShown="selectedTab" />
+        <DriverViewRides :key="updateViewRidesKey" :ridesShown="selectedTab" @updateRides="updateViewRidesKey++" />
     </main>
 </template>

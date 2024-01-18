@@ -20,6 +20,8 @@ const props = defineProps({
 
 const { ridesShown } = toRefs(props)
 
+const emit = defineEmits(["updateRides"])
+
 // console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref<Ride[]>([])
@@ -62,6 +64,21 @@ function filterRides(ridesArray: Ride[]) {
   // }
 }
 
+function deleteRide(rideId: number) {
+  fetch(`${config.apiBaseUrl}/rides/${rideId}`, { method: 'DELETE' })
+    .then(res=>{
+      console.log(res)
+      return res.json()
+    })
+    .then(data=>console.log(data))
+    // .then(data=>location.reload())
+    .then(data=>{
+      emit("updateRides")
+    })
+    // .then(data => fetchAllTodos())
+    .catch(err => console.log(err))
+}
+
 function getUserCountForRide(rideId : number) {
   let count = 0
   for (let entry of userrides.value) {
@@ -92,16 +109,16 @@ function getUserStringFromId(userId : number) {
   return "Unknown"
 }
 
-function isUserRegisteredForRide(rideId : number) {
-  for (let entry of userrides.value) {
-    if (entry.rideId == rideId) {
-      if (entry.userId == userId) {
-        return true
-      }
-    }
-  }
-  return false
-}
+// function isUserRegisteredForRide(rideId : number) {
+//   for (let entry of userrides.value) {
+//     if (entry.rideId == rideId) {
+//       if (entry.userId == userId) {
+//         return true
+//       }
+//     }
+//   }
+//   return false
+// }
 
 function getDateFromUnixTimestamp(timestamp : number) {
   var date = new Date(timestamp * 1000)
@@ -165,6 +182,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <th class="table-header"></th>
           <th class="table-header"></th>
           <th class="table-header"></th>
+          <th class="table-header"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-dark-400">
@@ -177,7 +195,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <td class="text-center"> {{ ride.price }}€ </td>
 
           <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.smokingAllowed, 'iconDisabled': !ride.smokingAllowed}" icon="smoking" /></td>
-          <td class="text-center"><FontAwesomeIcon icon="dog" /></td>
+          <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.petTransportAllowed, 'iconDisabled': !ride.petTransportAllowed}" icon="dog" /></td>
 
           <td class="text-center">
             <button class="button-no-bg text-center w-full"
@@ -188,6 +206,9 @@ fetch(`${config.apiBaseUrl}/users`)
             <button class="button text-center w-full" @click="editModalShowing=true; editModalRide=ride;">
                 Edit
               </button>
+          </td>
+          <td class="text-center">
+            <button class="button text-center" @click="deleteRide(ride.id)">Delete</button>
           </td>
         </tr>
       </tbody>
