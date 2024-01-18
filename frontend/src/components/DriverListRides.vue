@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import { ref, toRefs } from 'vue'
-import AvailableRidesList from './AvailableRidesList.vue'
 import config from "@/config";
 import { useRouter } from "vue-router"
 

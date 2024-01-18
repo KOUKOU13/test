@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref, toRefs, reactive, computed } from 'vue'
+import { ref, toRefs, reactive, computed, watch } from 'vue'
 import config from "@/config";
 import EditRide from './EditRide.vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -16,9 +16,15 @@ const props = defineProps({
     type: String,
     required: true
   },
+  isDriver: {
+    type: Boolean,
+    required: true
+  }
 })
 
-const { ridesShown } = toRefs(props)
+const { ridesShown, isDriver } = toRefs(props)
+
+const emit = defineEmits(["updateRides"])
 
 // console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
@@ -30,18 +36,42 @@ const modalOpen = ref<boolean>()
 const modalRide = ref<Ride>()
 const editModalShowing = ref<boolean>()
 const editModalRide = ref<Ride>()
+// when rides is fetched increment, same with userrides, once this variable==2, we can filter rides
+const ridesAndUserridesFetchedIncrement = ref(0)
 
 function filterRides(ridesArray: Ride[]) {
+  console.log("FILTERING")
   const currentTimestamp = Math.floor((+ new Date())/1000)
-  if (ridesShown.value == "upcoming") {
-    return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp >= currentTimestamp))
-  } 
-  else if (ridesShown.value == "past") {
-    return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp < currentTimestamp))
+  if (isDriver.value == true) {
+    if (ridesShown.value == "upcoming") {
+      return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp >= currentTimestamp))
+    } 
+    else if (ridesShown.value == "past") {
+      return ridesArray.filter((ride: Ride)=>(ride.driverId==parseInt(userId!) && ride.startTimestamp < currentTimestamp))
+    }
+    else {
+      return ridesArray
+    }
   }
   else {
-    return ridesArray
+    // check all userrides
+    console.log("checking userrides")
+    console.log(userrides.value)
+    for (let userRi of userrides.value) {
+      console.log(userRi)
+    }
+    // if (ridesShown.value == "upcoming") {
+    //   // userrides stuff to figure out but also need test data for that
+    //   return ridesArray.filter((ride: Ride)=>((userrides.userId==userId) && ride.startTimestamp >= currentTimestamp))
+    // }
+    // else if (ridesShown.value == "past") {
+    //   return ridesArray.filter((ride: Ride)=>(ride.driverId!=parseInt(userId!) && ride.startTimestamp < currentTimestamp))
+    // }
+    // else {
+    //   return ridesArray
+    // }
   }
+  
   
   // if (filterOn.value) {
   //   console.log("RUNNING FILTER")
@@ -60,6 +90,21 @@ function filterRides(ridesArray: Ride[]) {
   // else {
   //   return ridesArray
   // }
+}
+
+function deleteRide(rideId: number) {
+  fetch(`${config.apiBaseUrl}/rides/${rideId}`, { method: 'DELETE' })
+    .then(res=>{
+      console.log(res)
+      return res.json()
+    })
+    .then(data=>console.log(data))
+    // .then(data=>location.reload())
+    .then(data=>{
+      emit("updateRides")
+    })
+    // .then(data => fetchAllTodos())
+    .catch(err => console.log(err))
 }
 
 function getUserCountForRide(rideId : number) {
@@ -92,16 +137,16 @@ function getUserStringFromId(userId : number) {
   return "Unknown"
 }
 
-function isUserRegisteredForRide(rideId : number) {
-  for (let entry of userrides.value) {
-    if (entry.rideId == rideId) {
-      if (entry.userId == userId) {
-        return true
-      }
-    }
-  }
-  return false
-}
+// function isUserRegisteredForRide(rideId : number) {
+//   for (let entry of userrides.value) {
+//     if (entry.rideId == rideId) {
+//       if (entry.userId == userId) {
+//         return true
+//       }
+//     }
+//   }
+//   return false
+// }
 
 function getDateFromUnixTimestamp(timestamp : number) {
   var date = new Date(timestamp * 1000)
@@ -110,15 +155,12 @@ function getDateFromUnixTimestamp(timestamp : number) {
 
 fetch(`${config.apiBaseUrl}/rides`)
       .then(res=>res.json())
-      .then(data=>rides.value=filterRides(data))
       .then(data=>{
-        console.log("hereeeee")
-        if (rides.value.length > 1) {
-          console.log(rides.value[0].smokingAllowed)
-        }
-        
+        rides.value=data
+        ridesAndUserridesFetchedIncrement.value++
+        return rides.value
       })
-      .then(data=>console.log("Rides: " + JSON.stringify(data)))
+      // .then(data=>console.log("Rides: " + JSON.stringify(data)))
       .catch(err=>console.log(err))
 
 fetch(`${config.apiBaseUrl}/userrides`)
@@ -131,6 +173,7 @@ fetch(`${config.apiBaseUrl}/userrides`)
         console.log("usserrides data thing")
         console.log(data)
         userrides.value = data
+        ridesAndUserridesFetchedIncrement.value++
         return data
       })
       .catch(err=>console.log(err))
@@ -138,14 +181,38 @@ fetch(`${config.apiBaseUrl}/userrides`)
 fetch(`${config.apiBaseUrl}/addresses`)
       .then(res=>res.json())
       .then(data=>addresses.value=data)
-      .then(data=>console.log("Addresses: " + JSON.stringify(data)))
+      // .then(data=>console.log("Addresses: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching addresses: " + err))
       
 fetch(`${config.apiBaseUrl}/users`)
       .then(res=>res.json())
       .then(data=>users.value=data)
-      .then(data=>console.log("Users: " + JSON.stringify(data)))
+      // .then(data=>console.log("Users: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching users: " + err))
+
+
+// to only filter todos once rides and userrides are fetched since depends on both 
+// watch(rides, ()=>{
+//   console.log("RIDE CHANGE")
+//   // console.log(rides.value)
+//   if (userrides.value.length > 0) {
+//     ridesAndUserridesFetched.value = true
+//   }
+// })
+// watch(userrides, ()=>{
+//   console.log("USER CHANGE")
+//   console.log(rides.value)
+//   if (rides.value.length > 0) {
+//     ridesAndUserridesFetched.value = true
+//   }
+// })
+watch(ridesAndUserridesFetchedIncrement, () => {
+  if (ridesAndUserridesFetchedIncrement.value == 2) {
+    console.log("READY TO FILTER")
+    console.log(ridesAndUserridesFetchedIncrement.value)
+    rides.value = filterRides(rides.value)
+  }
+})
 
 </script>
 
@@ -165,6 +232,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <th class="table-header"></th>
           <th class="table-header"></th>
           <th class="table-header"></th>
+          <th class="table-header"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-dark-400">
@@ -177,7 +245,7 @@ fetch(`${config.apiBaseUrl}/users`)
           <td class="text-center"> {{ ride.price }}€ </td>
 
           <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.smokingAllowed, 'iconDisabled': !ride.smokingAllowed}" icon="smoking" /></td>
-          <td class="text-center"><FontAwesomeIcon icon="dog" /></td>
+          <td class="text-center"><FontAwesomeIcon :class="{'iconEnabled': ride.petTransportAllowed, 'iconDisabled': !ride.petTransportAllowed}" icon="dog" /></td>
 
           <td class="text-center">
             <button class="button-no-bg text-center w-full"
@@ -185,9 +253,27 @@ fetch(`${config.apiBaseUrl}/users`)
               Additional Info
             </button> </td>
           <td class="text-center">
-            <button class="button text-center w-full" @click="editModalShowing=true; editModalRide=ride;">
-                Edit
-              </button>
+
+            <button v-if="isDriver==true && ridesShown=='upcoming'" class="button text-center w-full" @click="editModalShowing=true; editModalRide=ride;">
+              Edit
+            </button>
+            <div v-if="isDriver==true && ridesShown=='past'">
+
+            </div>
+
+            <div v-if="isDriver==false && ridesShown=='upcoming'"></div>
+
+            <div v-if="isDriver==false && ridesShown=='past'" class="stars">
+              <td class="text-center"><FontAwesomeIcon :icon="['fas', 'star']" /></td>
+              <td class="text-center"><FontAwesomeIcon :icon="['fas', 'star']" /></td>
+              <td class="text-center"><FontAwesomeIcon :icon="['fas', 'star']" /></td>
+              <td class="text-center"><FontAwesomeIcon :icon="['fas', 'star']" /></td>
+              <td class="text-center"><FontAwesomeIcon :icon="['fas', 'star']" /></td>
+            </div>              
+
+          </td>
+          <td class="text-center">
+            <button class="button text-center" @click="deleteRide(ride.id)">Cancel</button>
           </td>
         </tr>
       </tbody>
