@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import type { Ride } from "../interface/Ride.vue"
 import type { UserRide } from "../interface/UserRide.vue"
+import type { UserApplication } from '@/interface/UserApplication.vue';
 
 const userId = localStorage.getItem("userID")
 let loggedIn = localStorage.getItem("userID") ? true : false
@@ -43,6 +44,7 @@ console.log(`showRegistered: ${showRidesUserRegisteredFor.value}`)
 
 const rides = ref<Ride[]>([])
 const userrides = ref<UserRide[]>([])
+const userapplications = ref<UserApplication[]>([])
 const addresses = ref([])
 const users = ref([])
 const modalOpen = ref<boolean>()
@@ -101,12 +103,15 @@ function sortRides(ridesArray: Ride[]) {
 
 function registerUserForRide(rideId : number) {
   console.log(`register for ${rideId}`)
-  fetch(`${config.apiBaseUrl}/userrides`, {
+  fetch(`${config.apiBaseUrl}/userapplications`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       userId: userId,
       rideId: rideId,
+      passengerCount: 1,  // TODO: change later
+      generation: 1,
+      message: "test message",
      })
     }).then(res=>console.log(`${res} printin`))
 }
@@ -161,9 +166,9 @@ function getUserStringFromId(userId : number) {
 }
 
 function isUserRegisteredForRide(rideId : number) {
-  for (let entry of userrides.value) {
+  for (let entry of userapplications.value) {
     if (entry.rideId == rideId) {
-      if (entry.userId == userId) {
+      if (entry.userId == parseInt(userId!)) {
         return true
       }
     }
@@ -197,6 +202,19 @@ fetch(`${config.apiBaseUrl}/userrides`)
       })
       .catch(err=>console.log(err))
 
+fetch(`${config.apiBaseUrl}/userapplications`)
+      .then((res) => {
+        console.log(res)
+        return res.json()
+      })
+      .then((data) => {
+        console.log("usserrides data thing")
+        console.log(data)
+        userapplications.value = data
+        return data
+      })
+      .catch(err=>console.log(err))
+
 fetch(`${config.apiBaseUrl}/addresses`)
       .then(res=>res.json())
       .then(data=>addresses.value=data)
@@ -208,8 +226,6 @@ fetch(`${config.apiBaseUrl}/users`)
       .then(data=>users.value=data)
       .then(data=>console.log("Users: " + JSON.stringify(data)))
       .catch(err=>console.log("Error fetching users: " + err))
-
-  // const filteredByRegisteredRides = computed(()=>rides.value.filter(ride => showRidesUserRegisteredFor.value == isUserRegisteredForRide(ride.id)))
 
 </script>
 
