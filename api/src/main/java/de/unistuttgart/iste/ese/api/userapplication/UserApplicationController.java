@@ -40,13 +40,13 @@ public class UserApplicationController {
                 String.format("UserApplication with ID %s not found!", id));
     }
 
-    @GetMapping("userapplication/user/{id}")
+    @GetMapping("/userapplications/user/{id}")
     public List<UserApplication> getUserApplicationsByUserId(@PathVariable("id") long id) {
         List<UserApplication> allUserApplications = userApplicationRepository.findByUserId(id);
         return allUserApplications;
     }
 
-    @GetMapping("userapplication/ride/{id}")
+    @GetMapping("/userapplications/ride/{id}")
     public List<UserApplication> getUserApplicationByRideId(@PathVariable("id") long id) {
         List<UserApplication> allUserApplications = userApplicationRepository.findByRideId(id);
         return allUserApplications;

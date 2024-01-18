@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "userrides")
+@Table(name = "userapplicaitons")
 public class UserApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
