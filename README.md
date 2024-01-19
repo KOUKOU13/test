@@ -14,3 +14,4 @@ Assuming all prerequisites are fulfilled, you can follow these instructions to g
 - Register a user (with any name). The Email address must be a valid email.
 - You can now create and join rides.
 # emundo
+# test
